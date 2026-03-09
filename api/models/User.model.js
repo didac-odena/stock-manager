@@ -29,7 +29,7 @@ const userSchema = new Schema(
     },
     avatar: {
       type: String,
-      defatult: "https://res.cloudinary.com/demo/image/upload/d_avatar.png",
+      default: "https://res.cloudinary.com/demo/image/upload/d_avatar.png",
     },
   },
   {
