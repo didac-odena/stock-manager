@@ -13,3 +13,9 @@
 - `fix: rename user model file and align manual test script`
 - Renamed the user model file to `User.model.js` so ESM imports resolve correctly and fixed the avatar default typo in the schema.
 - Updated the manual `test-user.js` script to use the project database name, keep the seeded user for duplicate-email checks, and handle the unique-index case more clearly.
+
+## 2026-03-10
+
+- `feat: add product model with owner relation and review virtual`
+- Added the `Product` schema with core catalog fields, category validation, optional sparse unique barcode, and the `owner` reference to `User`.
+- Included `toJSON` cleanup and the virtual populate that will expose related reviews from the `Review` collection.
