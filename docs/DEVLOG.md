@@ -19,3 +19,7 @@
 - `feat: add product model with owner relation and review virtual`
 - Added the `Product` schema with core catalog fields, category validation, optional sparse unique barcode, and the `owner` reference to `User`.
 - Included `toJSON` cleanup and the virtual populate that will expose related reviews from the `Review` collection.
+
+- `feat: add review model and relational smoke test`
+- Added the `Review` schema with integer rating validation, the `product` reference, and a compound unique index that blocks repeated reviews from the same email on the same product.
+- Created a manual `test-models.js` script that seeds user/product/review data, checks direct and virtual populate, and confirms the duplicate review constraint.
