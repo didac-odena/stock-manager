@@ -43,4 +43,4 @@
 - Added a Postman collection for the day 5 auth exercises and documented the login debugging trail in `errores.md` so the issue is easy to recognise later.
 
 - `docs: add daily task guides to the repository`
-- Added the `tareas/` markdown files to git so the day-by-day exercise notes are visible from GitHub together with the rest of the project documentation.
+- Added the `tareas/` markdown files from day 1 to day 18 to git so the exercise notes are visible from GitHub together with the rest of the project documentation.
