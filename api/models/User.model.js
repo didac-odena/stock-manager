@@ -48,9 +48,9 @@ const userSchema = new Schema(
 //Pre-Save hook
 userSchema.pre("save", async function () {
   if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, SALT_ROUNDS)
+    this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
   }
-})
+});
 
 //Instance login match
 userSchema.methods.checkPassword = function (plain) {

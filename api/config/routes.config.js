@@ -15,8 +15,8 @@ router.get("/categories", (req, res) => {
 });
 
 // 404 catch-all
-router.use(() => {
-  throw createHttpError(404, "Route not found");
+router.use((req, res, next) => {
+  next(createHttpError(404, "Route not found"));
 });
 
 export default router;
