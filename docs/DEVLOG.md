@@ -37,3 +37,7 @@
 - `feat: add basic auth login and token middleware`
 - Added a login controller that checks credentials against the user model, signs a JWT, and stores it in an HTTP-only cookie, plus a logout handler that clears the cookie.
 - Added an authentication middleware that reads the cookie, validates the token, and exposes `req.userId` for protected routes.
+
+- `fix: align auth routes and token secret config`
+- Moved the auth controller into the `controllers` folder, fixed JWT signing and verification to use the `TOKEN_SECRET` environment variable, and kept the auth endpoints mounted as `/api/login` and `/api/logout`.
+- Added a Postman collection for the day 5 auth exercises and documented the login debugging trail in `errores.md` so the issue is easy to recognise later.
