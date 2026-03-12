@@ -41,3 +41,6 @@
 - `fix: align auth routes and token secret config`
 - Moved the auth controller into the `controllers` folder, fixed JWT signing and verification to use the `TOKEN_SECRET` environment variable, and kept the auth endpoints mounted as `/api/login` and `/api/logout`.
 - Added a Postman collection for the day 5 auth exercises and documented the login debugging trail in `errores.md` so the issue is easy to recognise later.
+
+- `docs: add daily task guides to the repository`
+- Added the `tareas/` markdown files to git so the day-by-day exercise notes are visible from GitHub together with the rest of the project documentation.
