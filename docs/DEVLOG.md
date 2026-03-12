@@ -23,3 +23,9 @@
 - `feat: add review model and relational smoke test`
 - Added the `Review` schema with integer rating validation, the `product` reference, and a compound unique index that blocks repeated reviews from the same email on the same product.
 - Created a manual `test-models.js` script that seeds user/product/review data, checks direct and virtual populate, and confirms the duplicate review constraint.
+
+## 2026-03-12
+
+- `feat: add request sanitizing and API error middlewares`
+- Added middleware files to strip protected fields from incoming bodies, normalize API error responses, and validate Mongo ObjectId route params before controllers run.
+- Wired the global error handler into the Express app and updated the router 404 catch-all so missing routes flow through the shared error response layer.
