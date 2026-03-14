@@ -44,3 +44,13 @@
 
 - `docs: add daily task guides to the repository`
 - Added the `tareas/` markdown files from day 1 to day 18 to git so the exercise notes are visible from GitHub together with the rest of the project documentation.
+
+## 2026-03-14
+
+- `feat: add day 6 auth endpoints and invitation flow`
+- Added invitation-based register, profile endpoints (`me`, `updateProfile`), and protected invitation creation with the new `Invitation` model.
+- Updated API routes to protect auth/product operations with middleware and added Postman collections for day 6 and day 7 practice flows.
+
+- `fix: resolve register invitation cleanup and products controller issues`
+- Fixed invitation deletion after successful register by deleting through the model, and corrected products controller issues (syntax error in barcode update and pagination limit clamp).
+- Wired `validateObjectId` import in routes so product routes can load correctly without runtime errors.

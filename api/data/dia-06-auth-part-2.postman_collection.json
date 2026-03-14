@@ -1,0 +1,311 @@
+{
+  "info": {
+    "_postman_id": "bd225c12-9f70-4b0c-9f5b-7988c35cf1b7",
+    "name": "Day 06 - Auth Part 2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "invitationToken",
+      "value": ""
+    },
+    {
+      "key": "newAdminName",
+      "value": "Segundo Admin"
+    },
+    {
+      "key": "newAdminEmail",
+      "value": "segundoadmin@retailcatalog.com"
+    },
+    {
+      "key": "newAdminPassword",
+      "value": "Admin234!"
+    }
+  ],
+  "item": [
+    {
+      "name": "1) Admin Session",
+      "item": [
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@retailcatalog.com\",\n  \"password\": \"Admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "description": "Login del admin del seed. Debe devolver 200 y guardar cookie token."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Invitation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.token) {",
+                  "    pm.collectionVariables.set(\"invitationToken\", json.token);",
+                  "  }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/invitations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "invitations"
+              ]
+            },
+            "description": "Genera una invitacion y guarda token en variable de coleccion: invitationToken."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Me (Authenticated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            },
+            "description": "Verifica que la cookie es valida y devuelve el usuario logueado."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile (Name + Avatar)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin Actualizado\",\n  \"avatar\": \"https://i.pravatar.cc/150?img=11\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            },
+            "description": "Solo deberia actualizar name y avatar."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile (Try Email/Password)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hacker@evil.com\",\n  \"password\": \"newpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            },
+            "description": "El endpoint debe ignorar email/password y no cambiarlos."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logout"
+              ]
+            },
+            "description": "Borra la cookie del admin. Debe devolver 204."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Me (Without Cookie)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            },
+            "description": "Despues de logout debe devolver 401."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2) Register With Invitation",
+      "item": [
+        {
+          "name": "Register New Admin (Valid Token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{newAdminName}}\",\n  \"email\": \"{{newAdminEmail}}\",\n  \"password\": \"{{newAdminPassword}}\",\n  \"token\": \"{{invitationToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            },
+            "description": "Registro con token valido. Debe devolver 201 y consumir la invitacion."
+          },
+          "response": []
+        },
+        {
+          "name": "Register New Admin (Reuse Same Token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tercer Admin\",\n  \"email\": \"admin3@retailcatalog.com\",\n  \"password\": \"password123\",\n  \"token\": \"{{invitationToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            },
+            "description": "Reutilizar el mismo token deberia fallar (401 o 400 segun implementacion)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Me (New Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "me"
+              ]
+            },
+            "description": "Despues de register deberia haber cookie del nuevo admin y devolver 200."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout New Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logout"
+              ]
+            },
+            "description": "Cierra sesion del nuevo admin."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
