@@ -54,3 +54,9 @@
 - `fix: resolve register invitation cleanup and products controller issues`
 - Fixed invitation deletion after successful register by deleting through the model, and corrected products controller issues (syntax error in barcode update and pagination limit clamp).
 - Wired `validateObjectId` import in routes so product routes can load correctly without runtime errors.
+
+## 2026-03-17
+
+- `feat: add cloudinary storage config for uploads`
+- Added a reusable Cloudinary configuration module that reads credentials from environment variables and exposes a Multer storage adapter.
+- Kept the upload folder and accepted image formats centralized so the next upload middleware can plug into the same config without duplicating setup.
