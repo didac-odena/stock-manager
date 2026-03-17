@@ -60,3 +60,7 @@
 - `feat: add cloudinary storage config for uploads`
 - Added a reusable Cloudinary configuration module that reads credentials from environment variables and exposes a Multer storage adapter.
 - Kept the upload folder and accepted image formats centralized so the next upload middleware can plug into the same config without duplicating setup.
+
+- `feat: add multer upload middleware for Cloudinary`
+- Added the shared upload middleware that plugs Multer into the Cloudinary storage config so routes can accept product images with a single reusable import.
+- Kept the remaining pending controller and middleware cleanup changes together in the same save-point commit.

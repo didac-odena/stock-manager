@@ -99,7 +99,7 @@ export async function update(req, res) {
   const product = await Product.findByIdAndUpdate(
     req.params.id,
     updateData,
-    { new: true, runValidators: true },
+    { new: true, runValidators: true }, //return document after o before
   );
 
   if (!product) {
