@@ -64,3 +64,7 @@
 - `feat: add multer upload middleware for Cloudinary`
 - Added the shared upload middleware that plugs Multer into the Cloudinary storage config so routes can accept product images with a single reusable import.
 - Kept the remaining pending controller and middleware cleanup changes together in the same save-point commit.
+
+- `feat: wire upload middleware into product routes`
+- Updated the product create and update routes to accept up to three `images` files through the shared upload middleware.
+- Fixed the missing `upload` import in the router so the new route setup can load without a runtime reference error.

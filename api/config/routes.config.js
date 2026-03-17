@@ -4,6 +4,7 @@ import { CATEGORIES } from "./categories.config.js";
 import * as authController from "../controllers/auth.controller.js";
 import { isAuthenticated } from "../middlewares/auth.middleware.js";
 import * as productsController from "../controllers/products.controller.js";
+import { upload } from "../middlewares/upload.middleware.js";
 import { validateObjectId } from "../middlewares/validate-object.middleware.js";
 
 const router = Router();
@@ -36,8 +37,8 @@ router.get("/products", productsController.list);
 router.get("/products/barcode/:barcode", isAuthenticated, productsController.findByBarcode);// Esta ruta es privada porque queremos proteger la información de los productos por código de barras
 router.get("/products/:id", validateObjectId,productsController.details);
 // Private routes
-router.post("/products", isAuthenticated, productsController.create);
-router.patch("/products/:id", isAuthenticated, validateObjectId, productsController.update);
+router.post("/products", isAuthenticated, upload.array("images", 3), productsController.create);
+router.patch("/products/:id", isAuthenticated, upload.array("images", 3), validateObjectId, productsController.update);
 router.delete("/products/:id", isAuthenticated, validateObjectId, productsController.remove);
 
 
