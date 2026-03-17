@@ -55,10 +55,9 @@ export async function details(req, res) {
 
 // Get product details by barcode
 export async function findByBarcode(req, res) {
-  const product = await Product.findOne({ barcode: req.params.barcode }).populate(
-    "owner",
-    "name",
-  );
+  const product = await Product.findOne({
+    barcode: req.params.barcode,
+  }).populate("owner", "name");
 
   if (!product) {
     throw createHttpError(404, "Product not found");
@@ -68,6 +67,8 @@ export async function findByBarcode(req, res) {
 
 //create product
 export async function create(req, res) {
+  const images = req.files ? req.files.map((file) => file.path) : [];
+
   const product = await Product.create({
     name: req.body.name,
     description: req.body.description,
@@ -76,6 +77,7 @@ export async function create(req, res) {
     categories: req.body.categories,
     barcode: req.body.barcode,
     owner: req.userId, // El ID del usuario autenticado que viene del middleware de autenticación
+    images, // Guardamos las URLs de las imágenes subidas a Cloudinary
   });
 
   res.status(201).json(product);
@@ -94,7 +96,11 @@ export async function update(req, res) {
   // Solo actualizamos el código de barras si se proporciona en la solicitud
   if (req.body.barcode !== undefined) {
     updateData.barcode = req.body.barcode || undefined; // Si se envía una cadena vacía, la convertimos a undefined para eliminar el campo
-      }
+  }
+
+  if (req.files && req.files.length > 0) {
+    updateData.images = req.files.map((file) => file.path);
+  }
 
   const product = await Product.findByIdAndUpdate(
     req.params.id,
@@ -117,4 +123,3 @@ export async function remove(req, res) {
   }
   res.status(204).end();
 }
-

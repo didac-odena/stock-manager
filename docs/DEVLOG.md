@@ -68,3 +68,7 @@
 - `feat: wire upload middleware into product routes`
 - Updated the product create and update routes to accept up to three `images` files through the shared upload middleware.
 - Fixed the missing `upload` import in the router so the new route setup can load without a runtime reference error.
+
+- `feat: add reviews endpoints and final Postman collection`
+- Added the public nested review routes plus the review controller so visitors can create and list product reviews without authentication, keeping the product existence check in both handlers.
+- Updated the products controller to persist uploaded image URLs from Cloudinary and added a complete Postman collection for the day 8 and 9 backend flow.
