@@ -1,10 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../../hooks/use-auth";
 
 function Navbar() {
+  const { user, logout } = useAuth();
+
   return (
     <nav className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+        <div className="flex h-16 items-center justify-between">
           <Link to="/" className="text-xl font-bold text-gray-900">
             Retail Catalog
           </Link>
@@ -14,22 +17,45 @@ function Navbar() {
               to="/products"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 font-semibold"
+                  ? "font-semibold text-blue-600"
                   : "text-gray-600 hover:text-gray-900"
               }
             >
-              Catalogo
+              Catalog
             </NavLink>
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-blue-600 font-semibold"
-                  : "text-gray-600 hover:text-gray-900"
-              }
-            >
-              Login
-            </NavLink>
+
+            {user ? (
+              <>
+                <NavLink
+                  to="/admin/profile"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "font-semibold text-blue-600"
+                      : "text-gray-600 hover:text-gray-900"
+                  }
+                >
+                  Profile
+                </NavLink>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-semibold text-blue-600"
+                    : "text-gray-600 hover:text-gray-900"
+                }
+              >
+                Login
+              </NavLink>
+            )}
           </div>
         </div>
       </div>
@@ -38,4 +64,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

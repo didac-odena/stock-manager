@@ -94,3 +94,7 @@
 - `feat: wire the frontend route tree`
 - Replaced the placeholder `App` component with the main React Router setup, grouping the public pages under `PublicLayout` and leaving the admin pages as standalone routes for now.
 - Added a catch-all redirect to `/` so unknown frontend routes fall back to the home page instead of rendering an empty screen.
+
+- `feat: add frontend auth context and api services`
+- Added the Vite `/api` proxy, installed Axios, and created frontend service modules for auth, products, categories, and reviews with a shared cookie-aware request setup.
+- Added `AuthProvider` plus `useAuth()` so the app can check the active session on startup and expose login, register, and logout actions through React context.
