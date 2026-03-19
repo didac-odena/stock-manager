@@ -78,3 +78,7 @@
 - `feat: scaffold react frontend with vite`
 - Added a new `web/` app created with Vite and React, including the base entry point, lint configuration, and frontend package scripts.
 - Kept the initial app intentionally minimal with the default `App` component so the day 10 routing exercises can build on a clean starting point.
+
+- `feat: add tailwind v4 setup to the web app`
+- Updated the Vite config to use the React SWC plugin together with the official Tailwind Vite plugin, and added the missing frontend dependency so the config can load correctly.
+- Replaced the base stylesheet with the Tailwind import and switched the sample app content to utility classes to confirm the setup is working.
