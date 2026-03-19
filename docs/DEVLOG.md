@@ -82,3 +82,7 @@
 - `feat: add tailwind v4 setup to the web app`
 - Updated the Vite config to use the React SWC plugin together with the official Tailwind Vite plugin, and added the missing frontend dependency so the config can load correctly.
 - Replaced the base stylesheet with the Tailwind import and switched the sample app content to utility classes to confirm the setup is working.
+
+- `feat: prepare frontend routing skeleton`
+- Added `react-router-dom`, wrapped the frontend entry point with `BrowserRouter`, and created the initial public/admin page components that will back the catalog flow.
+- Added shared `Navbar` and `Footer` layout components as the base navigation shell, while keeping `App.jsx` minimal until the route tree is wired in a later step.
