@@ -98,3 +98,7 @@
 - `feat: add frontend auth context and api services`
 - Added the Vite `/api` proxy, installed Axios, and created frontend service modules for auth, products, categories, and reviews with a shared cookie-aware request setup.
 - Added `AuthProvider` plus `useAuth()` so the app can check the active session on startup and expose login, register, and logout actions through React context.
+
+- `docs: add mini postman collection for day 10 and 11 checks`
+- Added a compact Postman collection under `api/data/` to validate frontend route availability (day 10) and auth/services API flow (day 11) with reusable local variables.
+- Included a minimal request sequence for login, profile, products, reviews, and logout so the integration can be smoke-tested quickly.
