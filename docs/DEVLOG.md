@@ -102,3 +102,7 @@
 - `docs: add mini postman collection for day 10 and 11 checks`
 - Added a compact Postman collection under `api/data/` to validate frontend route availability (day 10) and auth/services API flow (day 11) with reusable local variables.
 - Included a minimal request sequence for login, profile, products, reviews, and logout so the integration can be smoke-tested quickly.
+
+- `fix: align frontend auth flow with backend routes`
+- Reverted auth context structure to the day 11 single-file pattern (`auth.context.jsx`) and removed the extra context/hook split files that were not part of the exercise scope.
+- Fixed `auth.service.js` endpoints to match backend routes (`/login`, `/register`, `/me`, `/logout`, `/invitations`) so the profile check and auth actions stop hitting non-existing `/auth/*` paths.

@@ -26,10 +26,7 @@ function App() {
       {/* Admin routes without a dedicated layout yet */}
       <Route path="/admin/products" element={<AdminProductsPage />} />
       <Route path="/admin/products/new" element={<AdminProductFormPage />} />
-      <Route
-        path="/admin/products/:id/edit"
-        element={<AdminProductFormPage />}
-      />
+      <Route path="/admin/products/:id/edit" element={<AdminProductFormPage />} />
       <Route path="/admin/barcode" element={<AdminBarcodePage />} />
       <Route path="/admin/profile" element={<AdminProfilePage />} />
 
