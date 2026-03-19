@@ -86,3 +86,7 @@
 - `feat: prepare frontend routing skeleton`
 - Added `react-router-dom`, wrapped the frontend entry point with `BrowserRouter`, and created the initial public/admin page components that will back the catalog flow.
 - Added shared `Navbar` and `Footer` layout components as the base navigation shell, while keeping `App.jsx` minimal until the route tree is wired in a later step.
+
+- `feat: add public layout wrapper`
+- Added `PublicLayout` to render the shared `Navbar` and `Footer` around an `Outlet`, so public pages can reuse the same page shell through React Router nesting.
+- Kept the layout structure minimal with a flexible main area that lets page content fill the viewport between the header and footer.
