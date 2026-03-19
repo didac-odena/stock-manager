@@ -90,3 +90,7 @@
 - `feat: add public layout wrapper`
 - Added `PublicLayout` to render the shared `Navbar` and `Footer` around an `Outlet`, so public pages can reuse the same page shell through React Router nesting.
 - Kept the layout structure minimal with a flexible main area that lets page content fill the viewport between the header and footer.
+
+- `feat: wire the frontend route tree`
+- Replaced the placeholder `App` component with the main React Router setup, grouping the public pages under `PublicLayout` and leaving the admin pages as standalone routes for now.
+- Added a catch-all redirect to `/` so unknown frontend routes fall back to the home page instead of rendering an empty screen.
