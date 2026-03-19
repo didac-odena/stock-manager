@@ -72,3 +72,9 @@
 - `feat: add reviews endpoints and final Postman collection`
 - Added the public nested review routes plus the review controller so visitors can create and list product reviews without authentication, keeping the product existence check in both handlers.
 - Updated the products controller to persist uploaded image URLs from Cloudinary and added a complete Postman collection for the day 8 and 9 backend flow.
+
+## 2026-03-19
+
+- `feat: scaffold react frontend with vite`
+- Added a new `web/` app created with Vite and React, including the base entry point, lint configuration, and frontend package scripts.
+- Kept the initial app intentionally minimal with the default `App` component so the day 10 routing exercises can build on a clean starting point.
