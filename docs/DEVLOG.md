@@ -111,3 +111,9 @@
 - `feat: implement login and register forms with react-hook-form`
 - Replaced the placeholder login and register pages with working forms connected to the auth context, including redirect-on-session behavior and API error feedback.
 - Added field-level validation through `react-hook-form` and included the new dependency in frontend package manifests.
+
+## 2026-03-20
+
+- `feat: add homepage featured sections with reusable product/category cards`
+- Built the public home page with hero, category shortcuts, and featured products loaded from existing services.
+- Added reusable `CategoryCard` and `ProductCard` components plus a placeholder image fallback for products without photos.
