@@ -106,3 +106,8 @@
 - `fix: align frontend auth flow with backend routes`
 - Reverted auth context structure to the day 11 single-file pattern (`auth.context.jsx`) and removed the extra context/hook split files that were not part of the exercise scope.
 - Fixed `auth.service.js` endpoints to match backend routes (`/login`, `/register`, `/me`, `/logout`, `/invitations`) so the profile check and auth actions stop hitting non-existing `/auth/*` paths.
+## 2026-03-20
+
+- `feat: implement login and register forms with react-hook-form`
+- Replaced the placeholder login and register pages with working forms connected to the auth context, including redirect-on-session behavior and API error feedback.
+- Added field-level validation through `react-hook-form` and included the new dependency in frontend package manifests.
