@@ -135,3 +135,9 @@
 - `chore: update workspace editor defaults`
 - Added a 100-column ruler plus JS/TS wrap lengths in `stock-manager.code-workspace` to keep formatting behavior consistent while coding.
 - Disabled `chatgpt.openOnStartup` in workspace settings to reduce editor noise on project startup.
+
+## 2026-03-21
+
+- `fix: load product detail and reviews in a single effect`
+- Updated `ProductDetailPage` to fetch product and reviews together with `Promise.all`, then hydrate both states in one place.
+- Removed the conditional hook pattern that called `useEffect` after an early `loading` return, preventing the hook-order runtime error.
