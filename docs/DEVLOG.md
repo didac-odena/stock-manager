@@ -123,3 +123,9 @@
 - `feat: implement public catalog page with URL-driven filters and pagination`
 - Replaced the `CatalogPage` placeholder with real data loading from products/categories services, including category filters, search by name, loading states, and paginated grid rendering.
 - Added a debounced search sync with `useSearchParams` and guarded the effect to avoid resetting pagination when the user moves between pages.
+
+## 2026-03-21
+
+- `docs: normalize "catálogo" wording in day guides`
+- Updated day notes from `tareas/dia-11.md` to `tareas/dia-17.md` to keep wording/accent consistency across examples and checklist items.
+- Adjusted the Tailwind utility example in `tareas/dia-18.md` from `flex-shrink-0` to `shrink-0` to align with the current utility style used in the project.

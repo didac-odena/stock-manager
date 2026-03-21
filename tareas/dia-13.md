@@ -81,7 +81,7 @@ function ProductCard({ product }) {
 }
 ```
 
-Asi lo reutilizamos en la home, el catalogo, etc.
+Asi lo reutilizamos en la home, el catálogo, etc.
 
 ### Imagen por defecto
 
@@ -231,7 +231,7 @@ function HomePage() {
             to="/products"
             className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors"
           >
-            Ver catalogo
+            Ver catálogo
           </Link>
         </div>
       </section>
@@ -289,14 +289,14 @@ Puedes usar cualquier imagen gris con un icono de imagen. O simplemente un cuadr
 3. Abre `http://localhost:5173/`
 
 Verifica:
-- El hero se muestra con el boton "Ver catalogo".
+- El hero se muestra con el boton "Ver catálogo".
 - Las categorias aparecen como tarjetas.
 - Los productos destacados aparecen como tarjetas con imagen, nombre y precio.
 - Productos sin stock muestran "Agotado".
 - Productos sin imagenes muestran la imagen placeholder.
 - Hacer clic en una categoria lleva a `/products?category=Ropa` (el nombre de la categoria, no un ID).
 - Hacer clic en un producto lleva a `/products/<id>`.
-- El boton "Ver catalogo" lleva a `/products`.
+- El boton "Ver catálogo" lleva a `/products`.
 
 ### Tarea 6 — Ajustar estilos (~30min)
 
@@ -325,7 +325,7 @@ Dedica un rato a pulir el aspecto visual:
 - [ ] Seccion de productos destacados (ultimos 6)
 - [ ] Productos sin stock muestran "Agotado"
 - [ ] Productos sin imagenes muestran placeholder
-- [ ] Click en categoria lleva al catalogo filtrado
+- [ ] Click en categoria lleva al catálogo filtrado
 - [ ] Click en producto lleva al detalle
 - [ ] Loading state mientras cargan los datos
 - [ ] Datos cargados en paralelo con Promise.all

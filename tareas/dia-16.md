@@ -54,9 +54,9 @@ Cuando React intenta renderizar cualquier ruta dentro de este bloque:
 
 **Atencion al loading del AuthContext**: si `user` es `null` mientras el AuthContext esta comprobando la sesion, `PrivateRoute` redirigira a login incorrectamente. Por eso el AuthContext muestra un spinner mientras `loading === true`, antes de que se renderice el `Router` y el `PrivateRoute`.
 
-### Tabla de productos admin vs catalogo publico
+### Tabla de productos admin vs catálogo publico
 
-El catalogo publico muestra tarjetas visuales. El admin muestra una tabla con datos de gestion:
+El catálogo publico muestra tarjetas visuales. El admin muestra una tabla con datos de gestion:
 
 | Imagen | Nombre | Categorias | Stock | Precio | Acciones |
 |--------|--------|------------|-------|--------|----------|
@@ -84,7 +84,7 @@ async function handleDelete(id) {
 ### Paginacion en el admin
 
 Para el admin, usamos `useState` simple en vez de `searchParams`. La diferencia:
-- Catalogo publico → `useSearchParams` (la URL es compartible, el boton "atras" funciona con los filtros)
+- catálogo publico → `useSearchParams` (la URL es compartible, el boton "atras" funciona con los filtros)
 - Panel admin → `useState` (no necesitamos compartir la URL de la pagina de administracion, el estado es efimero)
 
 ---
@@ -528,7 +528,7 @@ export default AdminProfilePage;
 ## Refuerzo (~30min)
 
 - Prueba a acceder a `/admin/products` sin estar logueado → debe redirigir a `/login`.
-- Comprueba que los productos eliminados desde el admin ya no aparecen en el catalogo publico.
+- Comprueba que los productos eliminados desde el admin ya no aparecen en el catálogo publico.
 - Si ves algun detalle visual que mejorar, aprovecha.
 
 ---

@@ -1,6 +1,6 @@
 # Dia 15 — Detalle de producto + reviews con estrellas
 
-> Objetivo: implementar la pagina de detalle del producto con galeria de imagenes, disponibilidad, y el sistema de reviews (mostrar valoraciones y formulario para que los visitantes dejen su opinion). Dia mas tranquilo tras el catalogo.
+> Objetivo: implementar la pagina de detalle del producto con galeria de imagenes, disponibilidad, y el sistema de reviews (mostrar valoraciones y formulario para que los visitantes dejen su opinion). Dia mas tranquilo tras el catálogo.
 
 ---
 
@@ -118,7 +118,7 @@ El estado `reviews` ya refleja el cambio sin necesidad de una peticion adicional
 
 ### Disponibilidad publica
 
-Segun el PRD, el catalogo publico muestra "Disponible" o "Agotado", nunca la cantidad exacta de stock. Esto protege informacion sensible del negocio (cuanto stock queda) de cara a visitantes y competencia. El admin si ve la cantidad exacta.
+Segun el PRD, el catálogo publico muestra "Disponible" o "Agotado", nunca la cantidad exacta de stock. Esto protege informacion sensible del negocio (cuanto stock queda) de cara a visitantes y competencia. El admin si ve la cantidad exacta.
 
 ---
 
@@ -173,7 +173,7 @@ function ProductDetailPage() {
         to="/products"
         className="inline-flex items-center text-blue-600 hover:underline mb-6"
       >
-        &larr; Volver al catalogo
+        &larr; Volver al catálogo
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -378,16 +378,16 @@ Anadir el JSX de reviews al final del componente, despues del grid de imagen+inf
 
 ### Tarea 3 — Probar el detalle y las reviews (~30min)
 
-1. Navega al catalogo y haz clic en un producto.
+1. Navega al catálogo y haz clic en un producto.
 2. Verifica:
    - Imagen principal se muestra.
    - Si tiene varias imagenes, las miniaturas aparecen y al hacer clic cambian la imagen principal.
    - Si no tiene imagenes, se muestra el placeholder.
    - Precio formateado con 2 decimales.
-   - Las categorias son enlaces que llevan al catalogo filtrado.
+   - Las categorias son enlaces que llevan al catálogo filtrado.
    - Disponible/Agotado segun el stock.
    - Descripcion se muestra si existe.
-   - Boton "Volver al catalogo" funciona.
+   - Boton "Volver al catálogo" funciona.
    - Las reviews del seed aparecen debajo.
    - El selector de estrellas funciona (clic cambia el color).
    - El formulario de review envia correctamente.
@@ -395,12 +395,12 @@ Anadir el JSX de reviews al final del componente, despues del grid de imagen+inf
 
 ### Tarea 4 — Probar con producto inexistente (~10min)
 
-Navega a `http://localhost:5173/products/000000000000000000000000` (un ID valido pero que no existe). Deberia redirigir al catalogo.
+Navega a `http://localhost:5173/products/000000000000000000000000` (un ID valido pero que no existe). Deberia redirigir al catálogo.
 
 ### Tarea 5 — Probar desde distintos puntos de entrada (~15min)
 
 1. Desde la Home → clic en producto destacado → detalle.
-2. Desde el catalogo filtrado → clic en producto → detalle.
+2. Desde el catálogo filtrado → clic en producto → detalle.
 3. Pegar URL directa del detalle → deberia cargar correctamente.
 4. Boton atras del navegador → vuelve a donde estabas.
 
@@ -416,7 +416,7 @@ Ajusta lo que veas necesario:
 
 ## Refuerzo (~30min)
 
-- Este es un buen momento para repasar toda la parte publica: Home → Catalogo → Detalle. Navega como un visitante y comprueba que el flujo es fluido.
+- Este es un buen momento para repasar toda la parte publica: Home → catálogo → Detalle. Navega como un visitante y comprueba que el flujo es fluido.
 - Revisa en DevTools que solo se hace 1 peticion al entrar en el detalle (GET /api/products/:id).
 - Si algo no funciona bien (filtros, paginacion, galeria), este dia mas ligero es buen momento para arreglarlo.
 
@@ -427,18 +427,18 @@ Ajusta lo que veas necesario:
 - [ ] ProductDetailPage implementada
 - [ ] useParams lee el :id de la URL
 - [ ] Producto se carga al montar el componente
-- [ ] Producto inexistente redirige al catalogo
+- [ ] Producto inexistente redirige al catálogo
 - [ ] Imagen principal se muestra
 - [ ] Miniaturas funcionan (clic cambia imagen principal)
 - [ ] Productos sin imagenes muestran placeholder
 - [ ] Precio con 2 decimales
 - [ ] Disponible / Agotado (sin mostrar cantidad)
-- [ ] Categorias como enlaces al catalogo filtrado (array de strings)
+- [ ] Categorias como enlaces al catálogo filtrado (array de strings)
 - [ ] Descripcion visible si existe
-- [ ] Boton "Volver al catalogo"
+- [ ] Boton "Volver al catálogo"
 - [ ] Responsive: imagen arriba en mobile, al lado en desktop
 - [ ] Reviews del producto se cargan y muestran (con estrellas)
 - [ ] Formulario de review con selector de estrellas y campo email
 - [ ] Nueva review se anade a la lista sin recargar
 - [ ] Review duplicada (mismo email) muestra mensaje de error
-- [ ] Flujo completo: Home → Catalogo → Detalle → Review funciona
+- [ ] Flujo completo: Home → catálogo → Detalle → Review funciona

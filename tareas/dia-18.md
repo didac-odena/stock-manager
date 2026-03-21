@@ -197,7 +197,7 @@ function AdminBarcodePage() {
               <img
                 src={product.images[0]}
                 alt={product.name}
-                className="w-20 h-20 rounded object-cover flex-shrink-0"
+                className="w-20 h-20 rounded object-cover shrink-0"
               />
             )}
             <div className="flex-1">

@@ -1,6 +1,6 @@
-# Dia 14 — Catalogo: listado + filtros + busqueda + paginacion
+# Dia 14 — catálogo: listado + filtros + busqueda + paginacion
 
-> Objetivo: implementar la pagina de catalogo completa con filtro por categoria, busqueda por nombre y paginacion. Es la pagina publica mas compleja.
+> Objetivo: implementar la pagina de catálogo completa con filtro por categoria, busqueda por nombre y paginacion. Es la pagina publica mas compleja.
 
 ---
 
@@ -212,7 +212,7 @@ function CatalogPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Catalogo</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">catálogo</h1>
 
       {/* Barra de busqueda */}
       <div className="mb-6">
@@ -316,7 +316,7 @@ export default CatalogPage;
 
 1. Ve a la Home.
 2. Haz clic en una categoria → debe ir a `/products?category=Ropa` y mostrar filtrados.
-3. Haz clic en "Ver catalogo" → debe ir a `/products` sin filtros.
+3. Haz clic en "Ver catálogo" → debe ir a `/products` sin filtros.
 
 ### Tarea 4 — Ajustar responsive (~30min)
 

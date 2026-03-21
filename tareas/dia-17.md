@@ -416,7 +416,7 @@ export default AdminProductFormPage;
 4. Opcionalmente escribe un codigo de barras.
 5. Selecciona imagenes → verifica que aparecen las previews.
 6. Guardar → redirige a la lista con el producto nuevo.
-7. Verifica en el catalogo publico que aparece.
+7. Verifica en el catálogo publico que aparece.
 
 **Validaciones:**
 - Enviar sin nombre → error inline.
@@ -438,10 +438,10 @@ Recorre toda la app como un visitante y como un admin:
 
 **Visitante:**
 1. Home → categorias + productos destacados.
-2. Clic en categoria → catalogo filtrado.
+2. Clic en categoria → catálogo filtrado.
 3. Buscar por nombre → resultados filtrados.
 4. Clic en producto → detalle con galeria y reviews.
-5. Volver al catalogo → filtros se mantienen.
+5. Volver al catálogo → filtros se mantienen.
 
 **Admin:**
 1. Login → llega a /admin/products.
@@ -450,7 +450,7 @@ Recorre toda la app como un visitante y como un admin:
 4. Eliminar producto → desaparece.
 5. Perfil → editar nombre.
 6. Logout → vuelve a la web publica.
-7. Los productos creados/editados aparecen en el catalogo publico.
+7. Los productos creados/editados aparecen en el catálogo publico.
 
 ---
 
@@ -459,7 +459,7 @@ Recorre toda la app como un visitante y como un admin:
 - Prueba a crear un producto sin imagenes → deberia funcionar (las imagenes son opcionales).
 - Prueba a editar un producto y no subir imagenes nuevas → las actuales se mantienen.
 - Revisa en DevTools → Network que el POST/PATCH envia `multipart/form-data` (no JSON).
-- Verifica que las categorias del producto nuevo aparecen correctamente en el catalogo y en la pagina de detalle.
+- Verifica que las categorias del producto nuevo aparecen correctamente en el catálogo y en la pagina de detalle.
 
 ---
 
@@ -478,5 +478,5 @@ Recorre toda la app como un visitante y como un admin:
 - [ ] categories se envia como multiples valores en FormData (no como string)
 - [ ] Boton Cancelar vuelve a la lista
 - [ ] Boton Guardar deshabilitado mientras se envia
-- [ ] Flujo visitante completo funciona (home → catalogo → detalle)
+- [ ] Flujo visitante completo funciona (home → catálogo → detalle)
 - [ ] Flujo admin completo funciona (login → productos → perfil → logout)

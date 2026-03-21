@@ -451,7 +451,7 @@ function Navbar() {
                 isActive ? "text-blue-600 font-semibold" : "text-gray-600 hover:text-gray-900"
               }
             >
-              Catalogo
+              catálogo
             </NavLink>
 
             {user ? (
@@ -499,7 +499,7 @@ export default Navbar;
 3. Abre `http://localhost:5173`
 
 Sin login:
-- La navbar muestra "Catalogo" y "Login"
+- La navbar muestra "catálogo" y "Login"
 - No muestra "Admin" ni el nombre del usuario
 
 Haz login desde Postman (para que la cookie exista):
