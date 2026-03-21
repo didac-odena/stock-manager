@@ -129,3 +129,9 @@
 - `docs: normalize "catálogo" wording in day guides`
 - Updated day notes from `tareas/dia-11.md` to `tareas/dia-17.md` to keep wording/accent consistency across examples and checklist items.
 - Adjusted the Tailwind utility example in `tareas/dia-18.md` from `flex-shrink-0` to `shrink-0` to align with the current utility style used in the project.
+
+## 2026-03-21
+
+- `chore: update workspace editor defaults`
+- Added a 100-column ruler plus JS/TS wrap lengths in `stock-manager.code-workspace` to keep formatting behavior consistent while coding.
+- Disabled `chatgpt.openOnStartup` in workspace settings to reduce editor noise on project startup.

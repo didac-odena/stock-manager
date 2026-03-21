@@ -4,5 +4,12 @@
 			"path": "."
 		}
   ],
-  "settings": {}
+  "settings": {
+    "editor.rulers": [
+      100
+    ],
+    "javascript.format.wrapLineLength": 100,
+    "typescript.format.wrapLineLength": 100,
+    "chatgpt.openOnStartup": false
+  }
 }
