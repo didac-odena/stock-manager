@@ -46,7 +46,7 @@ function HomePage() {
             to="/products"
             className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors"
           >
-            Ver catalogo
+            Ver catálogo
           </Link>
         </div>
       </section>

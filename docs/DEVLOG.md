@@ -117,3 +117,9 @@
 - `feat: add homepage featured sections with reusable product/category cards`
 - Built the public home page with hero, category shortcuts, and featured products loaded from existing services.
 - Added reusable `CategoryCard` and `ProductCard` components plus a placeholder image fallback for products without photos.
+
+## 2026-03-21
+
+- `feat: implement public catalog page with URL-driven filters and pagination`
+- Replaced the `CatalogPage` placeholder with real data loading from products/categories services, including category filters, search by name, loading states, and paginated grid rendering.
+- Added a debounced search sync with `useSearchParams` and guarded the effect to avoid resetting pagination when the user moves between pages.

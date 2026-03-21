@@ -23,7 +23,7 @@ function Navbar() {
                 isActive ? "text-blue-600 font-semibold" : "text-gray-600 hover:text-gray-900"
               }
             >
-              Catalogo
+              Catálogo
             </NavLink>
 
             {user ? (
