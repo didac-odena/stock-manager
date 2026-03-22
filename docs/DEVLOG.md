@@ -148,3 +148,9 @@
 - Wrapped admin routes with `PrivateRoute` and a new `AdminLayout`, keeping product/profile pages inside a protected layout shell with sidebar navigation and logout.
 - Replaced the admin profile placeholder with a working `react-hook-form` form tied to `useAuth` and `updateProfile`, including success and API error feedback.
 - Updated the admin products data flow so the `useEffect` fetch no longer triggers the React hooks lint error on line 24 by moving the `loading` activation to user actions (pagination/delete refresh).
+
+## 2026-03-22
+
+- `fix: restore admin products list page and keep product form separated`
+- Replaced the placeholder in `AdminProductsPage` with the full admin table flow (fetch, empty state, delete action, and pagination) so `/admin/products` renders real content again.
+- Restored `AdminProductFormPage` as the dedicated create/edit form with React Hook Form + FormData, keeping day 17 behavior aligned with the exercise.

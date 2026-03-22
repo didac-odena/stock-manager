@@ -1,198 +1,282 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { getProducts, deleteProduct } from "../services/products.service";
+import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { getProduct, createProduct, updateProduct } from "../services/products.service";
+import { getCategories } from "../services/categories.service";
 
-function AdminProductsPage() {
-  const [products, setProducts] = useState([]);
-  const [meta, setMeta] = useState(null);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+function AdminProductFormPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const isEditing = Boolean(id);
 
-  function fetchProducts(pageNum) {
-    getProducts({ page: pageNum, limit: 10 })
-      .then((response) => {
-        setProducts(response.data);
-        setMeta(response.meta);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Error al cargar productos");
-      })
-      .finally(() => setLoading(false));
+  const [availableCategories, setAvailableCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [currentImages, setCurrentImages] = useState([]);
+  const [apiError, setApiError] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  // Cargar categorias disponibles
+  useEffect(() => {
+    getCategories().then(setAvailableCategories).catch(console.error);
+  }, []);
+
+  // Si estamos editando, cargar el producto
+  useEffect(() => {
+    if (isEditing) {
+      getProduct(id)
+        .then((product) => {
+          reset({
+            name: product.name,
+            description: product.description || "",
+            price: product.price,
+            stock: product.stock,
+            barcode: product.barcode || "",
+          });
+          setSelectedCategories(product.categories || []);
+          setCurrentImages(product.images || []);
+        })
+        .catch(() => navigate("/admin/products"));
+    }
+  }, [id, isEditing, reset, navigate]);
+
+  function handleCategoryChange(category) {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
   }
 
-  useEffect(() => {
-    fetchProducts(page);
-  }, [page]);
+  function handleFileChange(e) {
+    const files = Array.from(e.target.files);
+    if (files.length > 3) {
+      setApiError("Maximo 3 imagenes");
+      return;
+    }
+    setSelectedFiles(files);
+  }
 
-  async function handleDelete(id) {
-    if (!window.confirm("Seguro que quieres eliminar este producto?")) return;
-
+  async function onSubmit(data) {
     try {
-      setError("");
-      await deleteProduct(id);
-      setLoading(true);
-      fetchProducts(page);
-    } catch (err) {
-      setError(err.response?.data?.message || "Error al eliminar producto");
+      setApiError("");
+
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("description", data.description || "");
+      formData.append("price", data.price);
+      formData.append("stock", data.stock);
+
+      if (data.barcode) {
+        formData.append("barcode", data.barcode);
+      }
+
+      // Categorias: una llamada append por elemento
+      selectedCategories.forEach((cat) => {
+        formData.append("categories", cat);
+      });
+
+      selectedFiles.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      if (isEditing) {
+        await updateProduct(id, formData);
+      } else {
+        await createProduct(formData);
+      }
+
+      navigate("/admin/products");
+    } catch (error) {
+      setApiError(error.response?.data?.message || "Error al guardar producto");
     }
   }
 
-  function handlePreviousPage() {
-    setLoading(true);
-    setPage((currentPage) => Math.max(1, currentPage - 1));
-  }
-
-  function handleNextPage() {
-    if (!meta) return;
-    setLoading(true);
-    setPage((currentPage) => Math.min(meta.totalPages, currentPage + 1));
-  }
-
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Productos {meta && `(${meta.total})`}
-        </h1>
-        <Link
-          to="/admin/products/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          + Producto
-        </Link>
-      </div>
+    <div className="max-w-2xl">
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">
+        {isEditing ? "Editar producto" : "Crear producto"}
+      </h1>
 
-      {error && (
+      {apiError && (
         <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-sm">
-          {error}
+          {apiError}
         </div>
       )}
 
-      {loading ? (
-        <p className="text-gray-500">Cargando productos...</p>
-      ) : products.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-gray-500 mb-4">No hay productos todavia</p>
-          <Link
-            to="/admin/products/new"
-            className="text-blue-600 hover:underline"
-          >
-            Crear el primero
-          </Link>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Nombre */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Nombre
+          </label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("name", { required: "El nombre es obligatorio" })}
+          />
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          )}
         </div>
-      ) : (
-        <>
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                    Producto
-                  </th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                    Categorias
-                  </th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                    Stock
-                  </th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                    Precio
-                  </th>
-                  <th className="text-right px-6 py-3 text-sm font-medium text-gray-500">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {products.map((product) => {
-                  const imageUrl = product.images.length > 0
-                    ? product.images[0]
-                    : "/placeholder-product.png";
 
-                  return (
-                    <tr key={product.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={imageUrl}
-                            alt={product.name}
-                            className="w-10 h-10 rounded object-cover"
-                          />
-                          <span className="font-medium text-gray-900">
-                            {product.name}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-gray-600">
-                        {product.categories.join(", ") || "—"}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span
-                          className={`font-medium ${
-                            product.stock === 0
-                              ? "text-red-500"
-                              : product.stock < 5
-                              ? "text-yellow-600"
-                              : "text-gray-900"
-                          }`}
-                        >
-                          {product.stock}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-gray-900">
-                        {product.price.toFixed(2)} EUR
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex gap-2 justify-end">
-                          <Link
-                            to={`/admin/products/${product.id}/edit`}
-                            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                          >
-                            Editar
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(product.id)}
-                            className="text-red-500 hover:text-red-700 text-sm font-medium"
-                          >
-                            Eliminar
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+        {/* Descripcion */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Descripcion
+          </label>
+          <textarea
+            rows={4}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("description")}
+          />
+        </div>
+
+        {/* Precio y Stock */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Precio (EUR)
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register("price", {
+                required: "El precio es obligatorio",
+                min: { value: 0, message: "El precio no puede ser negativo" },
+              })}
+            />
+            {errors.price && (
+              <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
+            )}
           </div>
 
-          {/* Paginacion */}
-          {meta && meta.totalPages > 1 && (
-            <div className="flex justify-center items-center gap-4 mt-6">
-              <button
-                onClick={handlePreviousPage}
-                disabled={page <= 1}
-                className="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Anterior
-              </button>
-              <span className="text-gray-600 text-sm">
-                Pagina {meta.page} de {meta.totalPages}
-              </span>
-              <button
-                onClick={handleNextPage}
-                disabled={page >= meta.totalPages}
-                className="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Siguiente
-              </button>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Stock
+            </label>
+            <input
+              type="number"
+              min="0"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register("stock", {
+                required: "El stock es obligatorio",
+                min: { value: 0, message: "El stock no puede ser negativo" },
+              })}
+            />
+            {errors.stock && (
+              <p className="text-red-500 text-sm mt-1">{errors.stock.message}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Barcode (opcional) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Codigo de barras <span className="text-gray-400 font-normal">(opcional)</span>
+          </label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Ej: 1234567890123"
+            {...register("barcode")}
+          />
+        </div>
+
+        {/* Categorias (checkboxes) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Categorias
+          </label>
+          <div className="flex flex-wrap gap-3">
+            {availableCategories.map((cat) => (
+              <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={selectedCategories.includes(cat)}
+                  onChange={() => handleCategoryChange(cat)}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-700">{cat}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Imagenes */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Imagenes (max. 3)
+          </label>
+
+          {/* Imagenes actuales (solo en edicion) */}
+          {isEditing && currentImages.length > 0 && (
+            <div className="flex gap-2 mb-2">
+              {currentImages.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`Actual ${index + 1}`}
+                  className="w-20 h-20 rounded object-cover border"
+                />
+              ))}
+              <p className="text-xs text-gray-500 self-end">
+                (se reemplazaran si subes nuevas)
+              </p>
             </div>
           )}
-        </>
-      )}
+
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileChange}
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          />
+
+          {/* Preview de archivos seleccionados */}
+          {selectedFiles.length > 0 && (
+            <div className="flex gap-2 mt-2">
+              {selectedFiles.map((file, index) => (
+                <img
+                  key={index}
+                  src={URL.createObjectURL(file)}
+                  alt={`Preview ${index + 1}`}
+                  className="w-20 h-20 rounded object-cover border"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Botones */}
+        <div className="flex gap-3 pt-4">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
+            {isSubmitting ? "Guardando..." : "Guardar"}
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/admin/products")}
+            className="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-200"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
 
-export default AdminProductsPage;
+export default AdminProductFormPage;
