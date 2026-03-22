@@ -26,3 +26,7 @@ export function updateProduct(id, formData) {
 export function deleteProduct(id) {
   return http.delete(`/products/${id}`);
 }
+
+export function getProductByBarcode(barcode) {
+  return http.get(`/products/barcode/${encodeURIComponent(barcode)}`);
+}

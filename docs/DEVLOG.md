@@ -154,3 +154,9 @@
 - `fix: restore admin products list page and keep product form separated`
 - Replaced the placeholder in `AdminProductsPage` with the full admin table flow (fetch, empty state, delete action, and pagination) so `/admin/products` renders real content again.
 - Restored `AdminProductFormPage` as the dedicated create/edit form with React Hook Form + FormData, keeping day 17 behavior aligned with the exercise.
+
+## 2026-03-22
+
+- `feat: add admin barcode scanner flow`
+- Added `react-zxing` to the web app and implemented `AdminBarcodePage` to scan barcodes, fetch products by code, show product details, and reset scanning state.
+- Exposed `getProductByBarcode` in the products service, registered `/admin/barcode` in `App.jsx`, and added the "Escaner" link in the admin sidebar.

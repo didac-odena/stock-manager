@@ -10,9 +10,7 @@ function AdminLayout() {
 
   const linkClasses = ({ isActive }) =>
     `block px-4 py-2 rounded-lg transition-colors ${
-      isActive
-        ? "bg-blue-50 text-blue-700 font-semibold"
-        : "text-gray-600 hover:bg-gray-50"
+      isActive ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-600 hover:bg-gray-50"
     }`;
 
   return (
@@ -27,6 +25,9 @@ function AdminLayout() {
           <NavLink to="/admin/products" className={linkClasses}>
             Productos
           </NavLink>
+          <NavLink to="/admin/barcode" className={linkClasses}>
+            Escaner
+          </NavLink>
           <NavLink to="/admin/profile" className={linkClasses}>
             Perfil
           </NavLink>
@@ -34,10 +35,7 @@ function AdminLayout() {
 
         <div className="border-t pt-4 px-4">
           <p className="text-sm text-gray-500 mb-2">{user?.name}</p>
-          <button
-            onClick={handleLogout}
-            className="text-sm text-red-500 hover:text-red-700"
-          >
+          <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-700">
             Cerrar sesion
           </button>
         </div>

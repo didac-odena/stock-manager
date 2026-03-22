@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminProductFormPage from "./pages/AdminProductFormPage";
 import AdminProfilePage from "./pages/AdminProfilePage";
+import AdminBarcodePage from "./pages/AdminBarcodePage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/admin/products/new" element={<AdminProductFormPage />} />
         <Route path="/admin/products/:id/edit" element={<AdminProductFormPage />} />
         <Route path="/admin/profile" element={<AdminProfilePage />} />
+        <Route path="/admin/barcode" element={<AdminBarcodePage />} />
       </Route>
 
       {/* Fallback */}
