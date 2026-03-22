@@ -141,3 +141,10 @@
 - `fix: load product detail and reviews in a single effect`
 - Updated `ProductDetailPage` to fetch product and reviews together with `Promise.all`, then hydrate both states in one place.
 - Removed the conditional hook pattern that called `useEffect` after an early `loading` return, preventing the hook-order runtime error.
+
+## 2026-03-22
+
+- `fix: protect admin area and unblock admin products effect lint error`
+- Wrapped admin routes with `PrivateRoute` and a new `AdminLayout`, keeping product/profile pages inside a protected layout shell with sidebar navigation and logout.
+- Replaced the admin profile placeholder with a working `react-hook-form` form tied to `useAuth` and `updateProfile`, including success and API error feedback.
+- Updated the admin products data flow so the `useEffect` fetch no longer triggers the React hooks lint error on line 24 by moving the `loading` activation to user actions (pagination/delete refresh).
