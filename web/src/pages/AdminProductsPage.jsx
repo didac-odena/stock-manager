@@ -61,7 +61,7 @@ function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
         <h1 className="text-2xl font-bold text-white">
           Products {meta && `(${meta.total})`}
         </h1>
@@ -78,7 +78,7 @@ function AdminProductsPage() {
           placeholder="Search products by name..."
           value={searchTerm}
           onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
-          className="border-slate-700 bg-slate-950 text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:ring-cyan-400"
+          className="max-w-full border-slate-700 bg-slate-950 text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:ring-cyan-400"
         />
       </div>
 
@@ -103,9 +103,9 @@ function AdminProductsPage() {
       ) : (
         <>
           <div className="bg-slate-900 border border-slate-800 rounded-lg shadow overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-slate-800">
-                <tr>
+            <table className="w-full text-sm">
+              <thead className="hidden md:table-header-group bg-slate-800">
+                <tr className="md:table-row">
                   <th className="text-left px-6 py-3 text-sm font-medium text-slate-300">
                     Product
                   </th>
@@ -123,15 +123,15 @@ function AdminProductsPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-800 md:divide-y">
                 {products.map((product) => {
                   const imageUrl = product.images.length > 0
                     ? product.images[0]
                     : "/placeholder-product.png";
 
                   return (
-                    <tr key={product.id} className="hover:bg-slate-800/60">
-                      <td className="px-6 py-4">
+                    <tr key={product.id} className="block md:table-row p-4 md:p-0 space-y-2 md:space-y-0 hover:bg-slate-800/60">
+                      <td className="px-0 md:px-6 py-1 md:py-4 block md:table-cell">
                         <div className="flex items-center gap-3">
                           <img
                             src={imageUrl}
@@ -143,10 +143,12 @@ function AdminProductsPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-slate-300">
-                        {product.categories.join(", ") || "—"}
+                      <td className="px-0 md:px-6 py-1 md:py-4 flex flex-col md:table-cell md:block items-start gap-1 text-slate-300">
+                        <span className="md:hidden text-xs uppercase tracking-wide text-slate-400">Categories</span>
+                        <span className="w-full break-words">{product.categories.join(", ") || "—"}</span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-0 md:px-6 py-1 md:py-4 flex flex-col md:table-cell md:block items-start gap-1">
+                        <span className="md:hidden text-xs uppercase tracking-wide text-slate-400">Stock</span>
                         <span
                           className={`font-medium ${
                             product.stock === 0
@@ -159,11 +161,13 @@ function AdminProductsPage() {
                           {product.stock}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-slate-100">
-                        {product.price.toFixed(2)} EUR
+                      <td className="px-0 md:px-6 py-1 md:py-4 flex flex-col md:table-cell md:block items-start gap-1 text-slate-100">
+                        <span className="md:hidden text-xs uppercase tracking-wide text-slate-400">Price</span>
+                        <span>{product.price.toFixed(2)} EUR</span>
                       </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex gap-2 justify-end">
+                      <td className="px-0 md:px-6 py-1 md:py-4 flex flex-col md:table-cell md:block items-start gap-1">
+                        <span className="md:hidden text-xs uppercase tracking-wide text-slate-400">Actions</span>
+                        <div className="flex gap-3 justify-end">
                           <Link
                             to={`/admin/products/${product.id}/edit`}
                             className="text-cyan-300 hover:text-cyan-200 text-sm font-medium"
@@ -186,8 +190,8 @@ function AdminProductsPage() {
           </div>
 
           {/* Paginacion */}
-          {meta && meta.totalPages > 1 && (
-            <div className="flex justify-center items-center gap-4 mt-6">
+          {meta && (
+            <div className="mx-auto mt-6 flex w-full max-w-xs items-center justify-between gap-3">
               <button
                 onClick={handlePreviousPage}
                 disabled={page <= 1}
@@ -195,7 +199,7 @@ function AdminProductsPage() {
               >
                 Previous
               </button>
-              <span className="text-slate-300 text-sm">
+              <span className="text-slate-300 text-sm whitespace-nowrap">
                 Page {meta.page} of {meta.totalPages}
               </span>
               <button

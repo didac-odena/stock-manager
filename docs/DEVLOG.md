@@ -174,3 +174,9 @@
 - Rebranded the frontend from "Retail Catalog" to "Stock Manager", translated user-facing UI strings to English, and upgraded the homepage hero plus footer author section with LinkedIn CTA.
 - Updated product visibility and detail UX: guests now see availability badges while authenticated users keep exact stock values, and product reviews now show average rating plus total count.
 - Improved admin usability with a reusable search input on products, stronger dark-theme contrast in key admin screens, and barcode scanning embedded directly in the product form to auto-fill the barcode field.
+
+## 2026-03-23
+
+- `fix: improve admin mobile layout and pagination visibility`
+- Refined the admin responsive layout so the sidebar stacks at the top on mobile, navigation links wrap naturally, and the content area no longer forces horizontal scrolling.
+- Updated the admin products table to render mobile-friendly rows with labels and wrapped text, plus a compact pagination row (`Previous / Page X of Y / Next`) that stays visible in mobile view.
