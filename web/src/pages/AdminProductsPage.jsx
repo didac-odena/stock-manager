@@ -36,7 +36,7 @@ function AdminProductsPage() {
   }, [page, searchTerm]);
 
   async function handleDelete(id) {
-    if (!window.confirm("Seguro que quieres eliminar este producto?")) return;
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
       setError("");
@@ -44,7 +44,7 @@ function AdminProductsPage() {
       setLoading(true);
       loadProductsList();
     } catch (err) {
-      setError(err.response?.data?.message || "Error al eliminar producto");
+      setError(err.response?.data?.message || "Error deleting product");
     }
   }
 
@@ -62,74 +62,75 @@ function AdminProductsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Productos {meta && `(${meta.total})`}
+        <h1 className="text-2xl font-bold text-white">
+          Products {meta && `(${meta.total})`}
         </h1>
         <Link
           to="/admin/products/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="bg-cyan-400 text-slate-950 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-300"
         >
-          + Producto
+          + Product
         </Link>
       </div>
 
       <div className="mb-6">
         <SearchInput
-          placeholder="Buscar producto por nombre..."
+          placeholder="Search products by name..."
           value={searchTerm}
           onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
+          className="border-slate-700 bg-slate-950 text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:ring-cyan-400"
         />
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-sm">
+        <div className="bg-rose-900/30 border border-rose-700 text-rose-200 p-3 rounded mb-4 text-sm">
           {error}
         </div>
       )}
 
       {loading ? (
-        <p className="text-gray-500">Cargando productos...</p>
+        <p className="text-slate-300">Loading products...</p>
       ) : products.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-gray-500 mb-4">No hay productos todavia</p>
+          <p className="text-slate-300 mb-4">No products yet</p>
           <Link
             to="/admin/products/new"
-            className="text-blue-600 hover:underline"
+            className="text-cyan-300 hover:underline"
           >
-            Crear el primero
+            Create the first one
           </Link>
         </div>
       ) : (
         <>
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="bg-slate-900 border border-slate-800 rounded-lg shadow overflow-hidden">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-slate-800">
                 <tr>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                    Producto
+                  <th className="text-left px-6 py-3 text-sm font-medium text-slate-300">
+                    Product
                   </th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                    Categorias
+                  <th className="text-left px-6 py-3 text-sm font-medium text-slate-300">
+                    Categories
                   </th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
+                  <th className="text-left px-6 py-3 text-sm font-medium text-slate-300">
                     Stock
                   </th>
-                  <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                    Precio
+                  <th className="text-left px-6 py-3 text-sm font-medium text-slate-300">
+                    Price
                   </th>
-                  <th className="text-right px-6 py-3 text-sm font-medium text-gray-500">
-                    Acciones
+                  <th className="text-right px-6 py-3 text-sm font-medium text-slate-300">
+                    Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
+              <tbody className="divide-y divide-slate-800">
                 {products.map((product) => {
                   const imageUrl = product.images.length > 0
                     ? product.images[0]
                     : "/placeholder-product.png";
 
                   return (
-                    <tr key={product.id} className="hover:bg-gray-50">
+                    <tr key={product.id} className="hover:bg-slate-800/60">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <img
@@ -137,12 +138,12 @@ function AdminProductsPage() {
                             alt={product.name}
                             className="w-10 h-10 rounded object-cover"
                           />
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-slate-100">
                             {product.name}
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-gray-600">
+                      <td className="px-6 py-4 text-slate-300">
                         {product.categories.join(", ") || "—"}
                       </td>
                       <td className="px-6 py-4">
@@ -152,28 +153,28 @@ function AdminProductsPage() {
                               ? "text-red-500"
                               : product.stock < 5
                               ? "text-yellow-600"
-                              : "text-gray-900"
+                              : "text-slate-100"
                           }`}
                         >
                           {product.stock}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-gray-900">
+                      <td className="px-6 py-4 text-slate-100">
                         {product.price.toFixed(2)} EUR
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex gap-2 justify-end">
                           <Link
                             to={`/admin/products/${product.id}/edit`}
-                            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            className="text-cyan-300 hover:text-cyan-200 text-sm font-medium"
                           >
-                            Editar
+                            Edit
                           </Link>
                           <button
                             onClick={() => handleDelete(product.id)}
-                            className="text-red-500 hover:text-red-700 text-sm font-medium"
+                            className="text-rose-400 hover:text-rose-300 text-sm font-medium"
                           >
-                            Eliminar
+                            Delete
                           </button>
                         </div>
                       </td>
@@ -190,19 +191,19 @@ function AdminProductsPage() {
               <button
                 onClick={handlePreviousPage}
                 disabled={page <= 1}
-                className="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-100 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Anterior
+                Previous
               </button>
-              <span className="text-gray-600 text-sm">
-                Pagina {meta.page} de {meta.totalPages}
+              <span className="text-slate-300 text-sm">
+                Page {meta.page} of {meta.totalPages}
               </span>
               <button
                 onClick={handleNextPage}
                 disabled={page >= meta.totalPages}
-                className="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-100 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Siguiente
+                Next
               </button>
             </div>
           )}

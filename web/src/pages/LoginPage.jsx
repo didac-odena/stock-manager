@@ -24,13 +24,13 @@ function LoginPage() {
       await login(data.email, data.password);
       navigate("/admin/products");
     } catch (error) {
-      setApiError(error.response?.data?.message || "Error al iniciar sesion");
+      setApiError(error.response?.data?.message || "Error logging in");
     }
   }
 
   return (
     <div className="max-w-md mx-auto mt-16 px-4">
-      <h1 className="text-2xl font-bold text-center mb-8">Iniciar sesion</h1>
+      <h1 className="text-2xl font-bold text-center mb-8">Log in</h1>
 
       {apiError && (
         <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-sm">
@@ -48,7 +48,7 @@ function LoginPage() {
             type="email"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             {...register("email", {
-              required: "El email es obligatorio",
+              required: "Email is required",
             })}
           />
           {errors.email && (
@@ -65,7 +65,7 @@ function LoginPage() {
             type="password"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             {...register("password", {
-              required: "La contrasena es obligatoria",
+              required: "Password is required",
             })}
           />
           {errors.password && (
@@ -78,14 +78,14 @@ function LoginPage() {
           disabled={isSubmitting}
           className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {isSubmitting ? "Entrando..." : "Entrar"}
+          {isSubmitting ? "Logging in..." : "Log in"}
         </button>
       </form>
 
       <p className="text-center text-sm text-gray-500 mt-4">
-        Tienes una invitacion?{" "}
+        Have an invitation?{" "}
         <Link to="/register" className="text-blue-600 hover:underline">
-          Registrate
+          Register
         </Link>
       </p>
     </div>

@@ -10,39 +10,39 @@ function AdminLayout() {
 
   const linkClasses = ({ isActive }) =>
     `block px-4 py-2 rounded-lg transition-colors ${
-      isActive ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-600 hover:bg-gray-50"
+      isActive ? "bg-slate-800 text-cyan-300 font-semibold" : "text-slate-300 hover:bg-slate-800/60"
     }`;
 
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r p-4 flex flex-col">
-        <Link to="/" className="text-xl font-bold text-gray-900 mb-8 px-4">
-          Retail Catalog
+      <aside className="w-64 bg-slate-950 border-r border-slate-800 p-4 flex flex-col">
+        <Link to="/" className="text-xl font-bold text-white mb-8 px-4">
+          Stock Manager
         </Link>
 
         <nav className="flex flex-col gap-1 flex-1">
           <NavLink to="/admin/products" className={linkClasses}>
-            Productos
+            Products
           </NavLink>
           <NavLink to="/admin/barcode" className={linkClasses}>
-            Escaner
+            Scanner
           </NavLink>
           <NavLink to="/admin/profile" className={linkClasses}>
-            Perfil
+            Profile
           </NavLink>
         </nav>
 
         <div className="border-t pt-4 px-4">
-          <p className="text-sm text-gray-500 mb-2">{user?.name}</p>
-          <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-700">
-            Cerrar sesion
+          <p className="text-sm text-slate-400 mb-2">{user?.name}</p>
+          <button onClick={handleLogout} className="text-sm text-rose-400 hover:text-rose-300">
+            Log out
           </button>
         </div>
       </aside>
 
       {/* Contenido principal */}
-      <main className="flex-1 bg-gray-50 p-8">
+      <main className="flex-1 bg-slate-900 p-8 text-slate-100">
         <Outlet />
       </main>
     </div>

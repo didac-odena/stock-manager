@@ -32,7 +32,7 @@ function ProductDetailPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-96">
-        <p className="text-gray-500">Cargando producto...</p>
+        <p className="text-gray-500">Loading product...</p>
       </div>
     );
   }
@@ -50,9 +50,9 @@ function ProductDetailPage() {
       setReviewSuccess(true);
     } catch (err) {
       if (err.response?.status === 409) {
-        setReviewError("Ya has valorado este producto con ese email.");
+        setReviewError("You already reviewed this product with that email.");
       } else {
-        setReviewError("Error al enviar la valoracion. Inténtalo de nuevo.");
+        setReviewError("Error submitting the review. Please try again.");
       }
     }
   }
@@ -76,7 +76,7 @@ function ProductDetailPage() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Boton volver */}
       <Link to="/products" className="inline-flex items-center text-blue-600 hover:underline mb-6">
-        &larr; Volver al catálogo
+        &larr; Back to catalog
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -140,16 +140,16 @@ function ProductDetailPage() {
           <div className="mt-4">
             {user ? (
               <span className={`inline-block text-sm font-medium px-3 py-1 rounded-full ${stockBadgeClass}`}>
-                Stock: {product.stock} unidades
+                Stock: {product.stock} units
               </span>
             ) : (
               isAvailable ? (
                 <span className="inline-block bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                  Disponible
+                  Available
                 </span>
               ) : (
                 <span className="inline-block bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
-                  Agotado
+                  Out of stock
                 </span>
               )
             )}
@@ -157,7 +157,7 @@ function ProductDetailPage() {
 
           {product.description && (
             <div className="mt-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Descripcion</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">Description</h2>
               <p className="text-gray-600 leading-relaxed">{product.description}</p>
             </div>
           )}
@@ -165,24 +165,24 @@ function ProductDetailPage() {
       </div>
       {/* Seccion de reviews */}
       <div className="mt-12">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Valoraciones</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">Reviews</h2>
         <div className="mb-6">
           <p className="text-sm text-gray-600">
-            Media: <span className="font-semibold text-gray-900">{averageRating}/5</span>
+            Average: <span className="font-semibold text-gray-900">{averageRating}/5</span>
             {" · "}
             <span>
-              {reviewsCount} {reviewsCount === 1 ? "valoracion" : "valoraciones"}
+              {reviewsCount} {reviewsCount === 1 ? "rating" : "ratings"}
             </span>
           </p>
         </div>
 
         {/* Formulario nueva review */}
         <div className="bg-gray-50 rounded-lg p-6 mb-8">
-          <h3 className="font-semibold text-gray-800 mb-4">Deja tu valoracion</h3>
+          <h3 className="font-semibold text-gray-800 mb-4">Leave your review</h3>
           <form onSubmit={handleReviewSubmit} className="space-y-4">
             <input
               type="email"
-              placeholder="Tu email"
+              placeholder="Your email"
               value={reviewEmail}
               onChange={(e) => setReviewEmail(e.target.value)}
               required
@@ -203,21 +203,21 @@ function ProductDetailPage() {
             </div>
             {reviewError && <p className="text-red-500 text-sm">{reviewError}</p>}
             {reviewSuccess && (
-              <p className="text-green-600 text-sm">Valoracion enviada. Gracias!</p>
+              <p className="text-green-600 text-sm">Review submitted. Thanks!</p>
             )}
             <button
               type="submit"
               disabled={!reviewEmail || reviewRating === 0}
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Enviar valoracion
+              Submit review
             </button>
           </form>
         </div>
 
         {/* Lista de reviews */}
         {reviews.length === 0 ? (
-          <p className="text-gray-500">Aun no hay valoraciones para este producto.</p>
+          <p className="text-gray-500">No reviews yet for this product.</p>
         ) : (
           <div className="space-y-4">
             {reviews.map((review) => (

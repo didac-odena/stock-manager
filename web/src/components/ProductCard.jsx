@@ -12,8 +12,8 @@ function ProductCard({ product }) {
   const stockLabel = user
     ? `Stock: ${product.stock}`
     : isAvailable
-      ? "Disponible"
-      : "Agotado";
+      ? "Available"
+      : "Out of stock";
 
   const stockLabelClass = user
     ? product.stock === 0

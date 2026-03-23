@@ -78,12 +78,12 @@ function CatalogPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">catálogo</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Catalog</h1>
 
       {/* Barra de busqueda */}
       <div className="mb-6">
         <SearchInput
-          placeholder="Buscar por nombre..."
+          placeholder="Search by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -99,7 +99,7 @@ function CatalogPage() {
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
         >
-          Todas
+          All
         </button>
         {categories.map((cat) => (
           // cat es un string (ej: "Ropa"), no un objeto
@@ -120,11 +120,11 @@ function CatalogPage() {
       {/* Productos */}
       {loading ? (
         <div className="flex justify-center py-16">
-          <p className="text-gray-500">Cargando productos...</p>
+          <p className="text-gray-500">Loading products...</p>
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-gray-500">No se encontraron productos</p>
+          <p className="text-gray-500">No products found</p>
         </div>
       ) : (
         <>
@@ -142,17 +142,17 @@ function CatalogPage() {
                 disabled={currentPage <= 1}
                 className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Anterior
+                Previous
               </button>
               <span className="text-gray-600">
-                Pagina {meta.page} de {meta.totalPages}
+                Page {meta.page} of {meta.totalPages}
               </span>
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage >= meta.totalPages}
                 className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Siguiente
+                Next
               </button>
             </div>
           )}

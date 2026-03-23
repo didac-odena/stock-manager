@@ -9,21 +9,21 @@ function Navbar() {
   }
 
   return (
-    <nav className="bg-white shadow">
+    <nav className="bg-slate-950 text-slate-100 shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <Link to="/" className="text-xl font-bold text-gray-900">
-            Retail Catalog
+          <Link to="/" className="text-xl font-bold text-white">
+            Stock Manager
           </Link>
 
           <div className="flex gap-4 items-center">
             <NavLink
               to="/products"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 font-semibold" : "text-gray-600 hover:text-gray-900"
+                isActive ? "text-cyan-300 font-semibold" : "text-slate-300 hover:text-white"
               }
             >
-              Catálogo
+              Catalog
             </NavLink>
 
             {user ? (
@@ -31,27 +31,27 @@ function Navbar() {
                 <NavLink
                   to="/admin/products"
                   className={({ isActive }) =>
-                    isActive ? "text-blue-600 font-semibold" : "text-gray-600 hover:text-gray-900"
+                    isActive ? "text-cyan-300 font-semibold" : "text-slate-300 hover:text-white"
                   }
                 >
                   Admin
                 </NavLink>
-                <span className="text-gray-500 text-sm">{user.name}</span>
+                <span className="text-slate-400 text-sm">{user.name}</span>
                 <button
                   onClick={handleLogout}
-                  className="text-red-500 hover:text-red-700 text-sm"
+                  className="text-rose-400 hover:text-rose-300 text-sm"
                 >
-                  Logout
+                  Log out
                 </button>
               </>
             ) : (
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  isActive ? "text-blue-600 font-semibold" : "text-gray-600 hover:text-gray-900"
+                  isActive ? "text-cyan-300 font-semibold" : "text-slate-300 hover:text-white"
                 }
               >
-                Login
+                Log in
               </NavLink>
             )}
           </div>

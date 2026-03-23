@@ -31,9 +31,9 @@ function AdminBarcodePage() {
       setProduct(found);
     } catch (err) {
       if (err.response?.status === 404) {
-        setError(`No se encontro ningun producto con el codigo: ${code}`);
+        setError(`No product found for code: ${code}`);
       } else {
-        setError("Error al buscar el producto");
+        setError("Error searching product");
       }
     }
   }
@@ -48,14 +48,14 @@ function AdminBarcodePage() {
   return (
     <div className="max-w-lg">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
-        Escaner de barcode
+        Barcode scanner
       </h1>
 
       {/* Camara */}
       {scanning && (
         <div className="mb-6">
           <p className="text-sm text-gray-500 mb-3">
-            Apunta la camara al codigo de barras del producto.
+            Point the camera at the product barcode.
           </p>
           <div className="rounded-lg overflow-hidden border border-gray-200 bg-black">
             <video ref={ref} className="w-full" />
@@ -79,19 +79,19 @@ function AdminBarcodePage() {
                 {product.name}
               </h2>
               <p className="text-sm text-gray-500 mb-1">
-                Categorias: {product.categories.join(", ") || "—"}
+                Categories: {product.categories.join(", ") || "—"}
               </p>
               <p className="text-sm text-gray-500 mb-1">
                 Stock: <span className={`font-medium ${product.stock === 0 ? "text-red-500" : "text-gray-900"}`}>{product.stock}</span>
               </p>
               <p className="text-sm text-gray-500 mb-3">
-                Precio: <span className="font-medium text-gray-900">{product.price.toFixed(2)} EUR</span>
+                Price: <span className="font-medium text-gray-900">{product.price.toFixed(2)} EUR</span>
               </p>
               <Link
                 to={`/admin/products/${product.id}/edit`}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 inline-block"
               >
-                Editar producto
+                Edit product
               </Link>
             </div>
           </div>
@@ -111,7 +111,7 @@ function AdminBarcodePage() {
           onClick={handleReset}
           className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
         >
-          Escanear otro
+          Scan another
         </button>
       )}
     </div>

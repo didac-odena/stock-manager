@@ -167,3 +167,10 @@
 - Added a reusable `SearchInput` component and reused it in both `CatalogPage` and `AdminProductsPage`, with debounced search requests and page reset when the query changes.
 - Updated `ProductCard` and `ProductDetailPage` so authenticated users can see exact stock values while guest users keep simplified availability badges.
 - Increased seed generation from 15 to 200 products to make local catalog testing more realistic for pagination and search flows.
+
+## 2026-03-23
+
+- `feat: refresh Stock Manager UI and admin experience`
+- Rebranded the frontend from "Retail Catalog" to "Stock Manager", translated user-facing UI strings to English, and upgraded the homepage hero plus footer author section with LinkedIn CTA.
+- Updated product visibility and detail UX: guests now see availability badges while authenticated users keep exact stock values, and product reviews now show average rating plus total count.
+- Improved admin usability with a reusable search input on products, stronger dark-theme contrast in key admin screens, and barcode scanning embedded directly in the product form to auto-fill the barcode field.

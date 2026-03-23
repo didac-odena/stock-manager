@@ -26,7 +26,7 @@ function HomePage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-96">
-        <p className="text-gray-500">Cargando...</p>
+        <p className="text-gray-500">Loading...</p>
       </div>
     );
   }
@@ -34,19 +34,23 @@ function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gray-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            Retail Catalog
+      <section className="relative overflow-hidden bg-slate-950 text-white py-24">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(34,211,238,0.18),transparent_45%),radial-gradient(circle_at_bottom_left,_rgba(16,185,129,0.18),transparent_40%)]" />
+        <div className="relative max-w-7xl mx-auto px-4 text-center">
+          <p className="inline-flex items-center rounded-full border border-cyan-300/40 bg-cyan-300/10 px-4 py-1 text-sm font-medium text-cyan-200 mb-6">
+            Inventory control made simple
+          </p>
+          <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 tracking-tight">
+            Stock Manager
           </h1>
-          <p className="text-xl text-gray-300 mb-8">
-            Tu tienda de confianza, ahora online
+          <p className="text-lg sm:text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
+            Track products, stock, and reviews from one clean dashboard.
           </p>
           <Link
             to="/products"
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="inline-block bg-cyan-400 text-slate-950 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-cyan-300 transition-colors"
           >
-            Ver catálogo
+            Browse catalog
           </Link>
         </div>
       </section>
@@ -54,7 +58,7 @@ function HomePage() {
       {/* Categorias */}
       {categories.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 py-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Categorias</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">Categories</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {categories.map((category) => (
               <CategoryCard key={category} category={category} />
@@ -68,13 +72,13 @@ function HomePage() {
         <section className="max-w-7xl mx-auto px-4 py-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900">
-              Productos destacados
+              Featured products
             </h2>
             <Link
               to="/products"
               className="text-blue-600 hover:underline"
             >
-              Ver todos
+              View all
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
