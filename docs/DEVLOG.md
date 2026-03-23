@@ -186,3 +186,9 @@
 - `feat: allow password changes inside admin profile`
 - Extended `PATCH /api/me` to accept `currentPassword` + `newPassword`, validate the current password, and reuse the existing user model hashing flow when saving the new password.
 - Added a second form in `AdminProfilePage` for changing password (current, new, confirm) with basic client validation, clear success/error feedback, and no extra route/page.
+
+## 2026-03-23
+
+- `feat: add invitation expiration and daily sending limit`
+- Added a one-hour expiration window for invitation tokens and validated it in register flow, returning a clear "invalid or expired" error when needed.
+- Added a per-user limit of 20 invitation creations per day in `createInvitation`, returning HTTP 429 when the daily cap is reached.

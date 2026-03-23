@@ -1,5 +1,8 @@
 import { Schema, model } from "mongoose";
 
+const INVITATION_EXPIRATION_MS = 60 * 60 * 1000;
+const INVITATION_CLEANUP_SECONDS = 24 * 60 * 60;
+
 const invitationSchema = new Schema(
   {
     token: {
@@ -12,6 +15,11 @@ const invitationSchema = new Schema(
       ref: "User",
       required: true,
     },
+    expiresAt: {
+      type: Date,
+      required: true,
+      default: () => new Date(Date.now() + INVITATION_EXPIRATION_MS),
+    },
   },
   {
     timestamps: true,
@@ -22,6 +30,11 @@ const invitationSchema = new Schema(
       },
     },
   },
+);
+
+invitationSchema.index(
+  { createdAt: 1 },
+  { expireAfterSeconds: INVITATION_CLEANUP_SECONDS },
 );
 
 const Invitation = model("Invitation", invitationSchema);

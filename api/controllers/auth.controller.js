@@ -4,6 +4,8 @@ import User from "../models/User.model.js";
 import crypto from "crypto";
 import Invitation from "../models/Invitation.model.js";
 
+const DAILY_INVITATION_LIMIT = 20;
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
@@ -52,10 +54,13 @@ export async function register(req, res) {
     throw createHttpError(400, "Invitation token is required");
   }
 
-  const invitation = await Invitation.findOne({ token });
+  const invitation = await Invitation.findOne({
+    token,
+    expiresAt: { $gt: new Date() },
+  });
 
   if (!invitation) {
-    throw createHttpError(400, "Invalid invitation token");
+    throw createHttpError(400, "Invalid or expired invitation token");
   }
 
   const user = await User.create({ name, email, password });
@@ -96,6 +101,18 @@ export async function updateProfile(req, res) {
 }
 
 export async function createInvitation(req, res) {
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const invitationsToday = await Invitation.countDocuments({
+    createdBy: req.userId,
+    createdAt: { $gte: startOfDay },
+  });
+
+  if (invitationsToday >= DAILY_INVITATION_LIMIT) {
+    throw createHttpError(429, "Daily invitation limit reached (20/day)");
+  }
+
   const token = crypto.randomUUID();
 
   const invitation = await Invitation.create({
