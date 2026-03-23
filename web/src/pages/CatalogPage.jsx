@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { getProducts } from "../services/products.service";
 import { getCategories } from "../services/categories.service";
 import ProductCard from "../components/ProductCard";
+import SearchInput from "../components/SearchInput";
 
 function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,12 +82,10 @@ function CatalogPage() {
 
       {/* Barra de busqueda */}
       <div className="mb-6">
-        <input
-          type="text"
+        <SearchInput
           placeholder="Buscar por nombre..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full max-w-md border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 

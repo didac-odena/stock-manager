@@ -57,7 +57,7 @@ async function seed() {
     console.log("Admin user created:", admin.email);
 
     // Crear productos y reviews
-    const productDocs = Array.from({ length: 15 }, () =>
+    const productDocs = Array.from({ length: 200 }, () =>
       createProduct(admin._id),
     );
     const products = await Product.create(productDocs);

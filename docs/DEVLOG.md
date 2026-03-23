@@ -160,3 +160,10 @@
 - `feat: add admin barcode scanner flow`
 - Added `react-zxing` to the web app and implemented `AdminBarcodePage` to scan barcodes, fetch products by code, show product details, and reset scanning state.
 - Exposed `getProductByBarcode` in the products service, registered `/admin/barcode` in `App.jsx`, and added the "Escaner" link in the admin sidebar.
+
+## 2026-03-23
+
+- `feat: add reusable search input and admin products search`
+- Added a reusable `SearchInput` component and reused it in both `CatalogPage` and `AdminProductsPage`, with debounced search requests and page reset when the query changes.
+- Updated `ProductCard` and `ProductDetailPage` so authenticated users can see exact stock values while guest users keep simplified availability badges.
+- Increased seed generation from 15 to 200 products to make local catalog testing more realistic for pagination and search flows.

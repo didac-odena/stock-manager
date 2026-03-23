@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getProduct } from "../services/products.service";
 import { getReviews, createReview } from "../services/reviews.service";
+import { useAuth } from "../contexts/auth.context";
 
 function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -60,6 +62,15 @@ function ProductDetailPage() {
   const images = product.images.length > 0 ? product.images : ["/placeholder-product.png"];
 
   const isAvailable = product.stock > 0;
+  const stockBadgeClass = product.stock === 0
+    ? "bg-red-100 text-red-800"
+    : product.stock < 5
+      ? "bg-yellow-100 text-yellow-800"
+      : "bg-green-100 text-green-800";
+  const reviewsCount = reviews.length;
+  const averageRating = reviewsCount > 0
+    ? (reviews.reduce((total, review) => total + review.rating, 0) / reviewsCount).toFixed(1)
+    : "0.0";
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -127,14 +138,20 @@ function ProductDetailPage() {
           </div>
 
           <div className="mt-4">
-            {isAvailable ? (
-              <span className="inline-block bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                Disponible
+            {user ? (
+              <span className={`inline-block text-sm font-medium px-3 py-1 rounded-full ${stockBadgeClass}`}>
+                Stock: {product.stock} unidades
               </span>
             ) : (
-              <span className="inline-block bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
-                Agotado
-              </span>
+              isAvailable ? (
+                <span className="inline-block bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+                  Disponible
+                </span>
+              ) : (
+                <span className="inline-block bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
+                  Agotado
+                </span>
+              )
             )}
           </div>
 
@@ -149,6 +166,15 @@ function ProductDetailPage() {
       {/* Seccion de reviews */}
       <div className="mt-12">
         <h2 className="text-xl font-bold text-gray-900 mb-6">Valoraciones</h2>
+        <div className="mb-6">
+          <p className="text-sm text-gray-600">
+            Media: <span className="font-semibold text-gray-900">{averageRating}/5</span>
+            {" · "}
+            <span>
+              {reviewsCount} {reviewsCount === 1 ? "valoracion" : "valoraciones"}
+            </span>
+          </p>
+        </div>
 
         {/* Formulario nueva review */}
         <div className="bg-gray-50 rounded-lg p-6 mb-8">

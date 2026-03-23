@@ -1,30 +1,39 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getProducts, deleteProduct } from "../services/products.service";
+import SearchInput from "../components/SearchInput";
 
 function AdminProductsPage() {
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState(null);
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  function fetchProducts(pageNum) {
-    getProducts({ page: pageNum, limit: 10 })
+  function loadProductsList() {
+    const params = { page, limit: 10 };
+    const trimmedSearch = searchTerm.trim();
+    if (trimmedSearch) {
+      params.search = trimmedSearch;
+    }
+
+    getProducts(params)
       .then((response) => {
         setProducts(response.data);
         setMeta(response.meta);
       })
-      .catch((err) => {
-        console.error(err);
-        setError("Error al cargar productos");
-      })
+      .catch(console.error)
       .finally(() => setLoading(false));
   }
 
   useEffect(() => {
-    fetchProducts(page);
-  }, [page]);
+    setLoading(true);
+    const timer = setTimeout(() => {
+      loadProductsList();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [page, searchTerm]);
 
   async function handleDelete(id) {
     if (!window.confirm("Seguro que quieres eliminar este producto?")) return;
@@ -33,7 +42,7 @@ function AdminProductsPage() {
       setError("");
       await deleteProduct(id);
       setLoading(true);
-      fetchProducts(page);
+      loadProductsList();
     } catch (err) {
       setError(err.response?.data?.message || "Error al eliminar producto");
     }
@@ -62,6 +71,14 @@ function AdminProductsPage() {
         >
           + Producto
         </Link>
+      </div>
+
+      <div className="mb-6">
+        <SearchInput
+          placeholder="Buscar producto por nombre..."
+          value={searchTerm}
+          onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
+        />
       </div>
 
       {error && (
