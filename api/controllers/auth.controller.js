@@ -74,6 +74,20 @@ export async function updateProfile(req, res) {
   if (!user) {
     throw createHttpError(404, "User not found");
   }
+
+  if (req.body.newPassword !== undefined || req.body.currentPassword !== undefined) {
+    if (!req.body.currentPassword || !req.body.newPassword) {
+      throw createHttpError(400, "Current password and new password are required");
+    }
+
+    const isValidCurrentPassword = await user.checkPassword(req.body.currentPassword);
+    if (!isValidCurrentPassword) {
+      throw createHttpError(401, "Current password is incorrect");
+    }
+
+    user.password = req.body.newPassword;
+  }
+
   if (req.body.name !== undefined) user.name = req.body.name;
   if (req.body.avatar !== undefined) user.avatar = req.body.avatar;
 

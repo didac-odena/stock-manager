@@ -180,3 +180,9 @@
 - `fix: improve admin mobile layout and pagination visibility`
 - Refined the admin responsive layout so the sidebar stacks at the top on mobile, navigation links wrap naturally, and the content area no longer forces horizontal scrolling.
 - Updated the admin products table to render mobile-friendly rows with labels and wrapped text, plus a compact pagination row (`Previous / Page X of Y / Next`) that stays visible in mobile view.
+
+## 2026-03-23
+
+- `feat: allow password changes inside admin profile`
+- Extended `PATCH /api/me` to accept `currentPassword` + `newPassword`, validate the current password, and reuse the existing user model hashing flow when saving the new password.
+- Added a second form in `AdminProfilePage` for changing password (current, new, confirm) with basic client validation, clear success/error feedback, and no extra route/page.
