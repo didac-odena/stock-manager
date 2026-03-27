@@ -297,6 +297,10 @@ function AdminProductFormPage() {
                   key={index}
                   src={img}
                   alt={`Actual ${index + 1}`}
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = "/placeholder-product.png";
+                  }}
                   className="w-20 h-20 rounded object-cover border"
                 />
               ))}

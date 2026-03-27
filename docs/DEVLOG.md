@@ -192,3 +192,9 @@
 - `feat: add invitation expiration and daily sending limit`
 - Added a one-hour expiration window for invitation tokens and validated it in register flow, returning a clear "invalid or expired" error when needed.
 - Added a per-user limit of 20 invitation creations per day in `createInvitation`, returning HTTP 429 when the daily cap is reached.
+
+## 2026-03-27
+
+- `feat: randomize seed product images with reliable placeholder fallback`
+- Updated `api/bin/seed.js` to fetch a product-image pool from DummyJSON once per run, assign one random image per seeded product, and generate 400 seeded reviews using deterministic reviewer emails.
+- Added image load fallback handling in main product UI surfaces so broken external URLs automatically switch to `/placeholder-product.png` instead of showing broken image states.

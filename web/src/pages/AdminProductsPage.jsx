@@ -136,6 +136,10 @@ function AdminProductsPage() {
                           <img
                             src={imageUrl}
                             alt={product.name}
+                            onError={(event) => {
+                              event.currentTarget.onerror = null;
+                              event.currentTarget.src = "/placeholder-product.png";
+                            }}
                             className="w-10 h-10 rounded object-cover"
                           />
                           <span className="font-medium text-slate-100">

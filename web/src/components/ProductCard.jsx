@@ -34,6 +34,10 @@ function ProductCard({ product }) {
         <img
           src={imageUrl}
           alt={product.name}
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = "/placeholder-product.png";
+          }}
           className="w-full h-full object-cover"
         />
       </div>

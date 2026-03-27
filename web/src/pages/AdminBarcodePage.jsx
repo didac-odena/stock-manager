@@ -45,6 +45,10 @@ function AdminBarcodePage() {
     setLastCode("");
   }
 
+  const productImageUrl = product && product.images.length > 0
+    ? product.images[0]
+    : "/placeholder-product.png";
+
   return (
     <div className="max-w-lg">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
@@ -67,13 +71,15 @@ function AdminBarcodePage() {
       {product && (
         <div className="bg-white rounded-lg shadow p-6 mb-4">
           <div className="flex gap-4 items-start">
-            {product.images.length > 0 && (
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                className="w-20 h-20 rounded object-cover shrink-0"
-              />
-            )}
+            <img
+              src={productImageUrl}
+              alt={product.name}
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "/placeholder-product.png";
+              }}
+              className="w-20 h-20 rounded object-cover shrink-0"
+            />
             <div className="flex-1">
               <h2 className="text-lg font-semibold text-gray-900">
                 {product.name}

@@ -87,6 +87,10 @@ function ProductDetailPage() {
             <img
               src={images[selectedImage]}
               alt={product.name}
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "/placeholder-product.png";
+              }}
               className="w-full h-full object-cover"
             />
           </div>
@@ -107,6 +111,10 @@ function ProductDetailPage() {
                   <img
                     src={img}
                     alt={`${product.name} ${index + 1}`}
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = "/placeholder-product.png";
+                    }}
                     className="w-full h-full object-cover"
                   />
                 </button>
