@@ -31,6 +31,15 @@ const userSchema = new Schema(
       type: String,
       default: "https://res.cloudinary.com/demo/image/upload/d_avatar.png",
     },
+    dailyImageUploadCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    dailyImageUploadDate: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -40,6 +49,8 @@ const userSchema = new Schema(
       transform: (_doc, ret) => {
         delete ret._id;
         delete ret.password;
+        delete ret.dailyImageUploadCount;
+        delete ret.dailyImageUploadDate;
       },
     },
   },

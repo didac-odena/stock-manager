@@ -1,5 +1,87 @@
 import createHttpError from "http-errors";
 import Product from "../models/Product.model.js";
+import User from "../models/User.model.js";
+import { cloudinary } from "../config/cloudinary.config.js";
+
+const DAILY_IMAGE_UPLOAD_LIMIT = 3;
+const DAILY_IMAGE_UPLOAD_LIMIT_MESSAGE =
+  "This is a practice project and image uploads are limited to 3 per day. For more information, contact the administrator.";
+
+function getTodayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getCloudinaryPublicId(file) {
+  if (typeof file?.filename === "string" && file.filename.trim() !== "") {
+    return file.filename;
+  }
+
+  if (typeof file?.path === "string" && file.path.trim() !== "") {
+    const pathSegments = file.path.split("/upload/");
+
+    if (pathSegments.length === 2) {
+      const publicIdWithVersionAndExtension = pathSegments[1].replace(
+        /^v\d+\//,
+        "",
+      );
+      return publicIdWithVersionAndExtension.replace(/\.[^/.]+$/, "");
+    }
+  }
+
+  return null;
+}
+
+async function deleteUploadedImages(files = []) {
+  if (!Array.isArray(files) || files.length === 0) {
+    return;
+  }
+
+  const uniquePublicIds = [...new Set(files.map(getCloudinaryPublicId).filter(Boolean))];
+
+  if (uniquePublicIds.length === 0) {
+    return;
+  }
+
+  await Promise.allSettled(
+    uniquePublicIds.map((publicId) => cloudinary.uploader.destroy(publicId)),
+  );
+}
+
+async function getUploadQuotaState(userId, files = []) {
+  if (!Array.isArray(files) || files.length === 0) {
+    return null;
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    await deleteUploadedImages(files);
+    throw createHttpError(401, "User not found");
+  }
+
+  const today = getTodayKey();
+  const currentCount =
+    user.dailyImageUploadDate === today ? user.dailyImageUploadCount : 0;
+  const nextCount = currentCount + files.length;
+
+  if (nextCount > DAILY_IMAGE_UPLOAD_LIMIT) {
+    await deleteUploadedImages(files);
+    throw createHttpError(429, DAILY_IMAGE_UPLOAD_LIMIT_MESSAGE);
+  }
+
+  return { user, today, nextCount };
+}
+
+async function consumeUploadQuota(uploadQuotaState) {
+  if (!uploadQuotaState) {
+    return;
+  }
+
+  const { user, today, nextCount } = uploadQuotaState;
+  user.dailyImageUploadDate = today;
+  user.dailyImageUploadCount = nextCount;
+  await user.save();
+}
 
 // List products with pagination, filtering and search
 export async function list(req, res) {
@@ -68,23 +150,35 @@ export async function findByBarcode(req, res) {
 //create product
 export async function create(req, res) {
   const images = req.files ? req.files.map((file) => file.path) : [];
+  const uploadQuotaState = await getUploadQuotaState(req.userId, req.files);
 
-  const product = await Product.create({
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    stock: req.body.stock,
-    categories: req.body.categories,
-    barcode: req.body.barcode,
-    owner: req.userId, // El ID del usuario autenticado que viene del middleware de autenticación
-    images, // Guardamos las URLs de las imágenes subidas a Cloudinary
-  });
+  let product;
+
+  try {
+    product = await Product.create({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      stock: req.body.stock,
+      categories: req.body.categories,
+      barcode: req.body.barcode,
+      owner: req.userId,
+      images,
+    });
+  } catch (error) {
+    await deleteUploadedImages(req.files);
+    throw error;
+  }
+
+  await consumeUploadQuota(uploadQuotaState);
 
   res.status(201).json(product);
 }
 
 //update product
 export async function update(req, res) {
+  const uploadQuotaState = await getUploadQuotaState(req.userId, req.files);
+
   const updateData = {
     name: req.body.name,
     description: req.body.description,
@@ -102,15 +196,24 @@ export async function update(req, res) {
     updateData.images = req.files.map((file) => file.path);
   }
 
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    updateData,
-    { new: true, runValidators: true }, //return document after o before
-  );
+  let product;
+
+  try {
+    product = await Product.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+  } catch (error) {
+    await deleteUploadedImages(req.files);
+    throw error;
+  }
 
   if (!product) {
+    await deleteUploadedImages(req.files);
     throw createHttpError(404, "Product not found");
   }
+
+  await consumeUploadQuota(uploadQuotaState);
   res.json(product);
 }
 

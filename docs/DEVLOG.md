@@ -198,3 +198,10 @@
 - `feat: randomize seed product images with reliable placeholder fallback`
 - Updated `api/bin/seed.js` to fetch a product-image pool from DummyJSON once per run, assign one random image per seeded product, and generate 400 seeded reviews using deterministic reviewer emails.
 - Added image load fallback handling in main product UI surfaces so broken external URLs automatically switch to `/placeholder-product.png` instead of showing broken image states.
+
+## 2026-03-27
+
+- `fix: enforce daily per-user Cloudinary upload quota`
+- Added daily image upload quota fields to the user model and kept them hidden from API JSON responses.
+- Enforced a hard limit of 3 uploaded images per user per day in product create/update, returning HTTP 429 with a clear exercise-limit message when exceeded.
+- Added Cloudinary cleanup for over-limit or failed product writes so newly uploaded files are deleted instead of orphaned.
