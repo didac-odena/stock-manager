@@ -2,6 +2,8 @@ import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
+const PASSWORD_STRENGTH_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const userSchema = new Schema(
   {
@@ -22,23 +24,21 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters long"],
-      match: [
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character",
-      ],
+      validate: {
+        validator(passwordValue) {
+          if (!this.isModified("password")) {
+            return true;
+          }
+
+          return PASSWORD_STRENGTH_REGEX.test(passwordValue);
+        },
+        message:
+          "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character",
+      },
     },
     avatar: {
       type: String,
       default: "https://res.cloudinary.com/demo/image/upload/d_avatar.png",
-    },
-    dailyImageUploadCount: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    dailyImageUploadDate: {
-      type: String,
-      default: null,
     },
   },
   {
@@ -49,8 +49,6 @@ const userSchema = new Schema(
       transform: (_doc, ret) => {
         delete ret._id;
         delete ret.password;
-        delete ret.dailyImageUploadCount;
-        delete ret.dailyImageUploadDate;
       },
     },
   },

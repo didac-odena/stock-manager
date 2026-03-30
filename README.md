@@ -4,6 +4,10 @@ Stock Manager is a full-stack inventory and public catalog application built aro
 
 The goal of the project is to show practical product engineering across the whole stack: REST API design, authentication with secure cookies, media uploads, MongoDB data modeling, and a React frontend that exposes clearly different public and admin experiences.
 
+## Live Demo
+
+- Public URL: `https://stock-manager-black-waterfall-417.fly.dev/`
+
 ## Highlights
 
 - Full-stack architecture with a React + Vite frontend and an Express + MongoDB backend
@@ -50,7 +54,7 @@ The frontend uses Vite's development proxy so `/api` requests are forwarded to `
 
 ### Data Model
 
-- `User`: admin identity, profile data, password hashing, upload quota counters
+- `User`: admin identity, profile data, password hashing
 - `Product`: catalog item, stock, categories, barcode, images, owner reference
 - `Review`: public rating tied to a product and reviewer email
 - `Invitation`: time-limited token used for admin registration
@@ -321,25 +325,107 @@ The Postman collections cover the main API flows and are the fastest way to smok
 
 ## Deployment
 
-Deployment documentation is intentionally left pending and will be completed after the production rollout.
+This project is deployed as a single containerized app:
 
-This section will be expanded with:
+- Frontend (`web`) is built with Vite and served by Express in production.
+- Backend (`api`) keeps serving all routes under `/api`.
+- MongoDB runs on MongoDB Atlas (external managed service).
+- Hosting target is Fly.io.
 
-- production URLs
-- hosting setup
-- environment variable mapping
-- CORS and cookie notes for production
-- deployment and verification steps
+### Why `node:20-slim` instead of Alpine?
+
+The Docker base image is `node:20-slim`.
+
+`node:20-slim` is bigger than Alpine, but it is more reliable for this project because it uses native dependencies like `bcrypt`. Alpine can work, but usually introduces extra friction in first deployments.
+
+### Production prerequisites
+
+- Docker Desktop installed and running
+- Fly CLI installed (`fly`)
+- Fly.io account
+- MongoDB Atlas cluster and connection string
+- Cloudinary credentials (for product image uploads)
+
+### Build and run the container locally
+
+From the repository root:
+
+```bash
+docker build -t stock-manager:local .
+docker run --rm -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  -e MONGODB_URI=replace-me \
+  -e TOKEN_SECRET=replace-me \
+  -e CORS_ORIGIN=http://localhost:3000 \
+  -e CLOUDINARY_CLOUD_NAME=replace-me \
+  -e CLOUDINARY_API_KEY=replace-me \
+  -e CLOUDINARY_API_SECRET=replace-me \
+  stock-manager:local
+```
+
+Verify:
+
+- App: `http://localhost:3000`
+- API health: `http://localhost:3000/api/health`
+
+### Fly.io deployment flow
+
+From the repository root:
+
+1. Authenticate:
+
+```bash
+fly auth login
+```
+
+2. Create app config (no deploy yet):
+
+```bash
+fly launch --no-deploy
+```
+
+3. Set secrets:
+
+```bash
+fly secrets set \
+  NODE_ENV=production \
+  PORT=3000 \
+  MONGODB_URI=replace-me \
+  TOKEN_SECRET=replace-me \
+  CORS_ORIGIN=https://stock-manager-black-waterfall-417.fly.dev \
+  CLOUDINARY_CLOUD_NAME=replace-me \
+  CLOUDINARY_API_KEY=replace-me \
+  CLOUDINARY_API_SECRET=replace-me
+```
+
+4. Deploy:
+
+```bash
+fly deploy
+```
+
+5. Smoke test:
+
+- `GET /api/health`
+- Public catalog pages load correctly
+- Login works
+- `GET /api/me` returns authenticated profile
+- Product create/edit with image upload works
+
+### Production notes (cookies + CORS)
+
+- Auth uses HTTP-only cookies.
+- In production, use HTTPS and set `CORS_ORIGIN` to `https://stock-manager-black-waterfall-417.fly.dev`.
+- Frontend and API are served from the same app/origin, so `/api` relative calls continue to work.
 
 ## Known Limitations and Notes
 
 - Invitation tokens expire after 1 hour.
 - Admins can create up to 20 invitation tokens per day.
-- Product image uploads are limited to 3 images per user per day.
 - Public users can browse and review products, but exact stock counts are only shown to authenticated users.
 - Product image uploads depend on Cloudinary configuration.
 - There is no dedicated frontend screen yet for invitation token management.
-- Deployment instructions are not documented yet.
 - The seed flow still contains small legacy inconsistencies:
   - an outdated console password message
   - a legacy fallback database name when `MONGODB_URI` is missing

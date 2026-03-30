@@ -1,0 +1,15 @@
+.git
+.gitignore
+
+.claude
+docs
+tareas
+
+**/node_modules
+**/.env
+**/.env.*
+
+web/dist
+
+*.log
+stock-manager.code-workspace

@@ -205,3 +205,18 @@
 - Added daily image upload quota fields to the user model and kept them hidden from API JSON responses.
 - Enforced a hard limit of 3 uploaded images per user per day in product create/update, returning HTTP 429 with a clear exercise-limit message when exceeded.
 - Added Cloudinary cleanup for over-limit or failed product writes so newly uploaded files are deleted instead of orphaned.
+
+## 2026-03-30
+
+- `feat: prepare Docker + Fly production baseline with node 20 slim`
+- Added a root `Dockerfile` with multi-stage build: Vite frontend build stage and production API runtime stage using `node:20-slim`.
+- Added `.dockerignore` to keep build context small and exclude local-only files.
+- Updated Express app production behavior to serve the built frontend from `api/public` and keep `/api` routes unchanged.
+
+- `docs: add deployment guide and record slim-vs-alpine decision`
+- Replaced the placeholder deployment section in `README.md` with concrete Docker + Fly + Atlas setup and verification steps.
+- Documented the choice of `node:20-slim` over Alpine for a safer first deployment with native dependencies like `bcrypt`.
+
+- `fix: remove daily image upload quota and unblock product creation`
+- Removed the per-user daily Cloudinary upload quota checks from product create/update so admin product management no longer fails with quota-based 429 responses.
+- Simplified `User` model by removing quota-tracking fields and kept the password-strength validation scoped to real password changes, preventing false 400 validation errors during unrelated user saves.
