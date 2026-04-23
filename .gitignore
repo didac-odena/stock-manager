@@ -1,2 +1,17 @@
 # Shared root ignore rules go here.
 tareas
+
+# Env files (defense in depth; per-subproject .gitignore already ignores its own)
+.env
+.env.local
+.env.*.local
+
+# Editor and OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Build output (belt-and-suspenders; subprojects ignore their own)
+dist/
+build/
